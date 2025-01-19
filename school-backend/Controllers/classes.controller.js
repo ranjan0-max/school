@@ -62,7 +62,7 @@ const updateClass = async (req, res) => {
             updated_at: IST('database')
         };
 
-        await DB.update(Classes, query, data);
+        await DB.updateOne(Classes, query, data);
 
         return Response.success(res, {
             data: data,

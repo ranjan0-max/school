@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const staffSchema = new Schema({
+const teacherSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, required: true },
     dob: { type: Date, required: true },
@@ -19,5 +19,5 @@ const staffSchema = new Schema({
     updated_at: { type: Date, required: true }
 });
 
-const Staff = model('Staff', staffSchema);
-module.exports = Staff;
+const Teacher = model('Teacher', teacherSchema);
+module.exports = Teacher;
