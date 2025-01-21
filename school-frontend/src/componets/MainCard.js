@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 // constant
 const headerSX = {
     '& .MuiCardHeader-action': { mr: 0 },
-    background: 'powderblue',
+    background: 'rgb(124,186,223)',
     borderRadius: '5px'
 };
 
@@ -62,7 +62,11 @@ const MainCard = React.forwardRef(
 
                 {/* card content */}
                 {content && (
-                    <CardContent sx={contentSX} className={contentClass}>
+                    <CardContent
+                        sx={contentSX}
+                        className={contentClass}
+                        style={{ border: 'solid 2px rgb(245 243 243)', borderRadius: '5px', marginTop: '10px' }}
+                    >
                         {children}
                     </CardContent>
                 )}

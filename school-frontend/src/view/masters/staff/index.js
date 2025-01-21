@@ -2,10 +2,10 @@
 import DataTable from 'componets/DataTable';
 
 // student model
-import UserForm from './UserForm';
+import StaffForm from './StaffForm';
 
 // api
-import { createUser, getUser, updateUser } from 'api/user/useApi';
+import { createStaff, getStaffs, updateStaff } from 'api/staff/staffApi';
 
 //React
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,14 +18,14 @@ const Student = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userDetail, setUserDetail] = useState({});
+    const [staffDetail, setStaffDetail] = useState({});
     const [modelEvent, setModelEvent] = useState(false);
     const [data, setData] = useState([]);
 
     // fetch student list
-    const fetchUsers = async () => {
+    const fetchTeachers = async () => {
         try {
-            const response = await getUser();
+            const response = await getStaffs();
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
@@ -39,12 +39,12 @@ const Student = () => {
     // handle create
     const handleEventCreate = async (data) => {
         try {
-            const response = await createUser(data);
+            const response = await createStaff(data);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchUsers();
+                fetchTeachers();
                 handleModalClose();
             }
         } catch (error) {
@@ -55,12 +55,12 @@ const Student = () => {
     // update student
     const handleUpdate = async (id, data) => {
         try {
-            const response = await updateUser(id, data);
+            const response = await updateStaff(id, data);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchUsers();
+                fetchTeachers();
                 handleModalClose();
             }
         } catch (error) {
@@ -70,8 +70,11 @@ const Student = () => {
 
     // set the headers and actions
     const headers = [
-        { id: 'user_id', label: 'NAME', align: 'center' },
-        { id: 'role', label: 'ROLE', align: 'center' }
+        { id: 'name', label: 'NAME', align: 'center' },
+        { id: 'contact_number', label: 'C.NUMBER', align: 'center' },
+        { id: 'email', label: 'EMAIL', align: 'center' },
+        { id: 'gender', label: 'GENDER', align: 'center' },
+        { id: 'address', label: 'ADDRESS', align: 'center' }
     ];
 
     const actions = [
@@ -79,7 +82,7 @@ const Student = () => {
             title: 'Edit',
             icon: <EditIcon />,
             handler: (row) => {
-                setUserDetail(row);
+                setStaffDetail(row);
                 setModelEvent(false);
                 setIsModalOpen(true);
             }
@@ -104,28 +107,22 @@ const Student = () => {
     };
 
     React.useEffect(() => {
-        let isMounted = true;
-        if (isMounted) {
-            fetchUsers();
-        }
-        return () => {
-            isMounted = false;
-        };
+        fetchTeachers();
     }, []);
 
     return (
         <>
             <SnackbarComponent />
             <div {...(isModalOpen ? { inert: 'true' } : {})}>
-                <DataTable headers={headers} tableTitle="User List" addButton={addButton} actions={actions} data={data} />
+                <DataTable headers={headers} tableTitle="Staff List" addButton={addButton} actions={actions} data={data} />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-                <UserForm
+                <StaffForm
                     onCancel={handleModalClose}
                     handleCreate={handleEventCreate}
                     event={modelEvent}
                     handleUpdate={handleUpdate}
-                    userDetail={userDetail}
+                    staffDetail={staffDetail}
                 />
             </Dialog>
         </>

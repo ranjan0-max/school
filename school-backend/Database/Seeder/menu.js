@@ -13,7 +13,7 @@ const data = [
         breadcrumbs: false,
         children: [
             {
-                id: 'user',
+                id: 'users',
                 title: 'User',
                 type: 'item',
                 icon: 'icon_users',
@@ -22,7 +22,7 @@ const data = [
                 breadcrumbs: false
             },
             {
-                id: 'student',
+                id: 'students',
                 title: 'Student',
                 type: 'item',
                 icon: 'icon_student',
@@ -36,6 +36,33 @@ const data = [
                 type: 'item',
                 icon: 'icon_class',
                 url: '/masters/classes',
+                accesss: false,
+                breadcrumbs: false
+            },
+            {
+                id: 'teachers',
+                title: 'Teachers',
+                type: 'item',
+                icon: 'icon_teacher',
+                url: '/masters/teachers',
+                accesss: false,
+                breadcrumbs: false
+            },
+            {
+                id: 'staff',
+                title: 'Staff',
+                type: 'item',
+                icon: 'icon_staff',
+                url: '/masters/staff',
+                accesss: false,
+                breadcrumbs: false
+            },
+            {
+                id: 'subjects',
+                title: 'Subjects',
+                type: 'item',
+                icon: 'icon_subject',
+                url: '/masters/subjects',
                 accesss: false,
                 breadcrumbs: false
             }

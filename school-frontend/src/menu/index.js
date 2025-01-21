@@ -9,13 +9,14 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 // custom hook
 import useAuth from 'customHook/useAuth';
 
-// api
-
-// component
+// components
+import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
 const drawerWidth = 200;
+const expandedDrawerWidth = 200;
+const collapsedDrawerWidth = 72;
 
 export default function PermanentDrawerLeft() {
     const { menu } = useAuth();
@@ -23,10 +24,15 @@ export default function PermanentDrawerLeft() {
 
     const [label, setLabel] = useState('');
     const [menuGroups, setMenuGroups] = useState([]);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
     const handleMenuItemClick = (path, selectedLabel) => {
         navigate(path);
         setLabel(selectedLabel);
+    };
+
+    const handleDrawer = () => {
+        setIsDrawerOpen(!isDrawerOpen);
     };
 
     const groupMenuItems = (menuItems) => {
@@ -63,29 +69,69 @@ export default function PermanentDrawerLeft() {
     }, [menu]);
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <CssBaseline />
             {/* Header */}
-            <Box sx={{ position: 'fixed', width: `calc(100% - ${drawerWidth}px)`, zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Header label={label} />
-            </Box>
-            {/* Sidebar */}
-            <Sidebar drawerWidth={drawerWidth} accessableMenuList={menuGroups} handleMenuItemClick={handleMenuItemClick} />
-            {/* Main Content */}
             <Box
-                component="main"
+                component="header"
                 sx={{
-                    borderRadius: '5px',
-                    marginLeft: '3%',
-                    marginRight: '3%',
-                    flexGrow: 1,
-                    bgcolor: 'background.default',
-                    p: 3,
-                    marginTop: '55px', // Shift content from Header (assuming 64px height for Header)
-                    overflowY: 'auto' // Enable scrolling if content exceeds height
+                    p: 2,
+                    width: '100%',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: 'white',
+                    height: 'calc(100vh - 53vh - 100vh)'
                 }}
             >
-                <Outlet />
+                <Header isDrawerOpen={isDrawerOpen} handleDrawer={handleDrawer} />
+            </Box>
+            <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
+                {/* Sidebar */}
+                <Box
+                    sx={{
+                        width: isDrawerOpen ? drawerWidth : collapsedDrawerWidth,
+                        overflowY: 'auto',
+                        position: 'sticky',
+                        top: 64, // Adjust for the header height
+                        transition: 'width 0.3s ease'
+                    }}
+                >
+                    <Sidebar
+                        drawerWidth={drawerWidth}
+                        accessableMenuList={menuGroups}
+                        handleMenuItemClick={handleMenuItemClick}
+                        isDrawerOpen={isDrawerOpen}
+                        handleDrawer={handleDrawer}
+                    />
+                </Box>
+                {/* Main Content */}
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        bgcolor: 'background.default',
+                        pt: 6,
+                        pl: 4,
+                        pr: 2,
+                        overflowY: 'auto',
+                        transition: 'width 0.3s ease',
+                        height: 'calc(100vh)' // Ensuring content fits without overlap
+                    }}
+                >
+                    <Outlet />
+                </Box>
+            </Box>
+            {/* Footer */}
+            <Box
+                component="footer"
+                sx={{
+                    bgcolor: 'background.paper',
+                    textAlign: 'center',
+                    height: '48px'
+                }}
+            >
+                <Footer />
             </Box>
         </Box>
     );

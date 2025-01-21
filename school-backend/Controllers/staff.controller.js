@@ -2,6 +2,7 @@ const Response = require('../Helpers/response.helper');
 const { IST } = require('../Helpers/dateTime.helper');
 const DB = require('../Helpers/crud.helper');
 const Logger = require('../Helpers/logger');
+const AuthHelper = require('../Helpers/auth.helper');
 const controllerName = 'role.controller';
 
 const staff = require('../Database/Models/staff.model');
@@ -17,7 +18,7 @@ const createStaff = async (req, res) => {
 
         const userExist = await DB.readOne(User, { user_id: req.body.name });
 
-        let user_id = userExist._id;
+        let user_id = userExist?._id;
         if (!userExist) {
             const userData = {
                 user_id: req.body.name,
@@ -58,7 +59,7 @@ const createStaff = async (req, res) => {
 // get staff list
 const getStaffList = async (req, res) => {
     try {
-        const staffs = await DB.read(staff, req.query);
+        const staffs = await DB.findDetails(staff, req.query);
 
         return Response.success(res, {
             data: staffs,
@@ -85,7 +86,7 @@ const updateStaff = async (req, res) => {
             updated_at: IST('database')
         };
 
-        await DB.updateOne(staff, query, data);
+        await DB.updateOne(staff, { query, data });
 
         return Response.success(res, {
             data: data,

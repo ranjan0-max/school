@@ -10,22 +10,19 @@ import * as Yup from 'yup';
 // project imports
 import { gridSpacing } from 'constant/constant';
 
-//icons
-
 // constant
-const getInitialValues = (event, range, studentDetail) => {
+const getInitialValues = (event, range, staffDetail) => {
     const newEvent = {
-        name: !event ? studentDetail?.name : '',
-        gender: !event ? studentDetail?.gender : '',
-        current_class: !event ? studentDetail?.current_class : '',
-        class_roll_no: !event ? studentDetail?.class_roll_no : '',
-        dob: !event ? studentDetail?.dob : '',
-        email: !event ? studentDetail?.email : '',
-        father_name: !event ? studentDetail?.father_name : '',
-        father_cnt_number: !event ? studentDetail?.father_cnt_number : '',
-        mother_name: !event ? studentDetail?.mother_name : '',
-        mother_cnt_number: !event ? studentDetail?.mother_cnt_number : '',
-        address: !event ? studentDetail?.address : ''
+        name: !event ? staffDetail?.name : '',
+        dob: !event ? staffDetail?.dob?.split('T')[0] : '',
+        gender: !event ? staffDetail?.gender : '',
+        email: !event ? staffDetail?.email : '',
+        date_of_joining: !event ? staffDetail?.date_of_joining?.split('T')[0] : '',
+        father_name: !event ? staffDetail?.father_name : '',
+        contact_number: !event ? staffDetail?.contact_number : '',
+        mother_name: !event ? staffDetail?.mother_name : '',
+        address: !event ? staffDetail?.address : '',
+        today_presence: !event ? staffDetail?.today_presence : ''
     };
 
     if (event || range) {
@@ -35,33 +32,28 @@ const getInitialValues = (event, range, studentDetail) => {
     return newEvent;
 };
 
-const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, studentDetail }) => {
+const StaffForm = ({ event, range, handleCreate, handleUpdate, onCancel, staffDetail }) => {
     // validation
     const EventSchema = Yup.object().shape({
-        name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('Name is required'),
-        gender: Yup.string().required('Gender is required'),
-        current_class: Yup.number().required('Class Is Required'),
-        class_roll_no: Yup.number().typeError('Class Roll No must be a number'),
-        dob: Yup.date().required('Date is required'),
+        name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('This is required'),
+        dob: Yup.date().required('This is required'),
+        gender: Yup.string().required('This is required'),
         email: Yup.string().email('Invalid email address'),
-        father_name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('Father Name is required'),
-        father_cnt_number: Yup.string().test('valid-phone', 'Number must be 10 digits and contain only numbers', (value) => {
+        date_of_joining: Yup.date().required('This is required'),
+        father_name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('This is required'),
+        contact_number: Yup.string().test('valid-phone', 'Number must be 10 digits and contain only numbers', (value) => {
             if (!value) return true;
             if (value.length !== 10) return false;
             return /^[0-9]+$/.test(value);
         }),
-        mother_name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('Mother Name is required'),
-        mother_cnt_number: Yup.string().test('valid-phone', 'Number must be 10 digits and contain only numbers', (value) => {
-            if (!value) return true;
-            if (value.length !== 10) return false;
-            return /^[0-9]+$/.test(value);
-        }),
-        address: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('Address is required')
+        mother_name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('Thisis required'),
+        address: Yup.string().max(100, 'Address must be less than or equal to 100 characters').required('This is required'),
+        today_presence: Yup.boolean().required('This is required')
     });
 
     // submit form
     const formik = useFormik({
-        initialValues: getInitialValues(event, range, studentDetail),
+        initialValues: getInitialValues(event, range, staffDetail),
         validationSchema: EventSchema,
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
@@ -69,7 +61,7 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                 if (event) {
                     handleCreate(data);
                 } else {
-                    handleUpdate(studentDetail._id, data);
+                    handleUpdate(staffDetail._id, data);
                 }
             } catch (error) {
                 console.error(error);
@@ -83,7 +75,7 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
         <FormikProvider value={formik}>
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add Student' : 'Edit Student'}</DialogTitle>
+                    <DialogTitle>{event ? 'Add Staff' : 'Edit Staff'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
@@ -113,29 +105,6 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Current Class</Typography>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('current_class')}
-                                    error={Boolean(touched.current_class && errors.current_class)}
-                                    helperText={touched.current_class && errors.current_class}
-                                >
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Class Roll No</Typography>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('class_roll_no')}
-                                    error={Boolean(touched.class_roll_no && errors.class_roll_no)}
-                                    helperText={touched.class_roll_no && errors.class_roll_no}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">DOB</Typography>
                                 <TextField
                                     size="small"
@@ -160,6 +129,20 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
+                                <Typography marginBottom="5px">D.O Joining</Typography>
+                                <TextField
+                                    size="small"
+                                    type="date"
+                                    fullWidth
+                                    {...getFieldProps('date_of_joining')}
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    error={Boolean(touched.date_of_joining && errors.date_of_joining)}
+                                    helperText={touched.date_of_joining && errors.date_of_joining}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Father Name</Typography>
                                 <TextField
                                     size="small"
@@ -170,13 +153,13 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Father Phone Number</Typography>
+                                <Typography marginBottom="5px">Contact Number</Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
-                                    {...getFieldProps('father_cnt_number')}
-                                    error={Boolean(touched.father_cnt_number && errors.father_cnt_number)}
-                                    helperText={touched.father_cnt_number && errors.father_cnt_number}
+                                    {...getFieldProps('contact_number')}
+                                    error={Boolean(touched.contact_number && errors.contact_number)}
+                                    helperText={touched.contact_number && errors.contact_number}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -190,16 +173,6 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Mother Phone Number</Typography>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('mother_cnt_number')}
-                                    error={Boolean(touched.mother_cnt_number && errors.mother_cnt_number)}
-                                    helperText={touched.mother_cnt_number && errors.mother_cnt_number}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Address</Typography>
                                 <TextField
                                     size="small"
@@ -208,6 +181,20 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                                     error={Boolean(touched.address && errors.address)}
                                     helperText={touched.address && errors.address}
                                 />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={6}>
+                                <Typography marginBottom="5px">Today Presence</Typography>
+                                <TextField
+                                    select
+                                    size="small"
+                                    fullWidth
+                                    {...getFieldProps('today_presence')}
+                                    error={Boolean(touched.today_presence && errors.today_presence)}
+                                    helperText={touched.today_presence && errors.today_presence}
+                                >
+                                    <MenuItem value={true}>YES</MenuItem>
+                                    <MenuItem value={false}>NO</MenuItem>
+                                </TextField>
                             </Grid>
                         </Grid>
                     </DialogContent>
@@ -232,7 +219,7 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
     );
 };
 
-StudentForm.propTypes = {
+StaffForm.propTypes = {
     event: PropTypes.bool,
     range: PropTypes.object,
     handleDelete: PropTypes.func,
@@ -241,4 +228,4 @@ StudentForm.propTypes = {
     onCancel: PropTypes.func
 };
 
-export default StudentForm;
+export default StaffForm;

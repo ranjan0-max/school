@@ -1,11 +1,11 @@
 // csutome datatable
 import DataTable from 'componets/DataTable';
 
-// student model
-import UserForm from './UserForm';
+// Subject model
+import SubjectForm from './SubjectForm';
 
 // api
-import { createUser, getUser, updateUser } from 'api/user/useApi';
+import { createSubject, getSubjects, updateSubject } from 'api/subject/subjectApi';
 
 //React
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,18 +14,18 @@ import { Dialog } from '@mui/material';
 import useSnackbarAlert from 'customHook/alert';
 import React, { useState } from 'react';
 
-const Student = () => {
+const Subject = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userDetail, setUserDetail] = useState({});
+    const [subjectDetail, setSubjectDetail] = useState({});
     const [modelEvent, setModelEvent] = useState(false);
     const [data, setData] = useState([]);
 
-    // fetch student list
-    const fetchUsers = async () => {
+    // fetch Subject list
+    const fetchSubjects = async () => {
         try {
-            const response = await getUser();
+            const response = await getSubjects();
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
@@ -39,12 +39,12 @@ const Student = () => {
     // handle create
     const handleEventCreate = async (data) => {
         try {
-            const response = await createUser(data);
+            const response = await createSubject(data);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchUsers();
+                fetchSubjects();
                 handleModalClose();
             }
         } catch (error) {
@@ -52,15 +52,15 @@ const Student = () => {
         }
     };
 
-    // update student
+    // update Subject
     const handleUpdate = async (id, data) => {
         try {
-            const response = await updateUser(id, data);
+            const response = await updateSubject(id, data);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchUsers();
+                fetchSubjects();
                 handleModalClose();
             }
         } catch (error) {
@@ -69,17 +69,14 @@ const Student = () => {
     };
 
     // set the headers and actions
-    const headers = [
-        { id: 'user_id', label: 'NAME', align: 'center' },
-        { id: 'role', label: 'ROLE', align: 'center' }
-    ];
+    const headers = [{ id: 'name', label: 'NAME', align: 'center' }];
 
     const actions = [
         {
             title: 'Edit',
             icon: <EditIcon />,
             handler: (row) => {
-                setUserDetail(row);
+                setSubjectDetail(row);
                 setModelEvent(false);
                 setIsModalOpen(true);
             }
@@ -106,7 +103,7 @@ const Student = () => {
     React.useEffect(() => {
         let isMounted = true;
         if (isMounted) {
-            fetchUsers();
+            fetchSubjects();
         }
         return () => {
             isMounted = false;
@@ -117,19 +114,19 @@ const Student = () => {
         <>
             <SnackbarComponent />
             <div {...(isModalOpen ? { inert: 'true' } : {})}>
-                <DataTable headers={headers} tableTitle="User List" addButton={addButton} actions={actions} data={data} />
+                <DataTable headers={headers} tableTitle="Subject List" addButton={addButton} actions={actions} data={data} />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-                <UserForm
+                <SubjectForm
                     onCancel={handleModalClose}
                     handleCreate={handleEventCreate}
                     event={modelEvent}
                     handleUpdate={handleUpdate}
-                    userDetail={userDetail}
+                    subjectDetail={subjectDetail}
                 />
             </Dialog>
         </>
     );
 };
 
-export default Student;
+export default Subject;

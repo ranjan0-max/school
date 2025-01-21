@@ -72,7 +72,7 @@ const Classes = () => {
         { id: 'class_name', label: 'NAME', align: 'center' },
         { id: 'total_strength', label: 'TOTAL STRENGTH', align: 'center' },
         { id: 'total_student_capacity', label: 'CLASS CAPACITY', align: 'center' },
-        { id: 'class_teacher', label: 'CLASS TEACHER', align: 'center' },
+        { id: 'teacher_name', label: 'CLASS TEACHER', align: 'center' },
         { id: 'class_room_no', label: 'ROMM NO', align: 'center' }
     ];
 

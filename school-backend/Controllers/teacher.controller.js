@@ -3,6 +3,7 @@ const { IST } = require('../Helpers/dateTime.helper');
 const DB = require('../Helpers/crud.helper');
 const Logger = require('../Helpers/logger');
 const controllerName = 'role.controller';
+const AuthHelper = require('../Helpers/auth.helper');
 
 const Teacher = require('../Database/Models/teacher.model');
 const User = require('../Database/Models/user.model');
@@ -17,7 +18,7 @@ const createTeacher = async (req, res) => {
 
         const userExist = await DB.readOne(User, { user_id: req.body.name });
 
-        let user_id = userExist._id;
+        let user_id = userExist?._id;
         if (!userExist) {
             const userData = {
                 user_id: req.body.name,
@@ -58,7 +59,7 @@ const createTeacher = async (req, res) => {
 // get teacher list
 const getTeacherList = async (req, res) => {
     try {
-        const teachers = await DB.read(Teacher, req.query);
+        const teachers = await DB.findDetails(Teacher, req.query);
 
         return Response.success(res, {
             data: teachers,
@@ -85,7 +86,7 @@ const updateTeacher = async (req, res) => {
             updated_at: IST('database')
         };
 
-        await DB.updateOne(Teacher, query, data);
+        await DB.updateOne(Teacher, { query, data });
 
         return Response.success(res, {
             data: data,

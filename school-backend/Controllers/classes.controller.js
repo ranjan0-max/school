@@ -5,6 +5,7 @@ const Logger = require('../Helpers/logger');
 const controllerName = 'role.controller';
 
 const Classes = require('../Database/Models/classes.model');
+const mongoose = require('mongoose');
 
 // create the class
 const createClass = async (req, res) => {
@@ -35,7 +36,51 @@ const createClass = async (req, res) => {
 // get the class list
 const getClassList = async (req, res) => {
     try {
-        const classes = await DB.read(Classes, req.query);
+        const query = req.query;
+
+        delete query.auth_user_id;
+        delete query.user_role;
+
+        if (query.class_teacher) {
+            query.class_teacher = new mongoose.Types.ObjectId(query.class_teacher);
+        }
+
+        const pipeline = [
+            {
+                $match: {
+                    ...query
+                }
+            },
+            {
+                $lookup: {
+                    from: 'teachers',
+                    localField: 'class_teacher',
+                    foreignField: '_id',
+                    as: 'teacher'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$teacher',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    document: '$$ROOT',
+                    teacher_name: '$teacher.name'
+                }
+            },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: ['$document', { teacher_name: '$teacher_name' }]
+                    }
+                }
+            }
+        ];
+
+        const classes = await DB.aggregation(Classes, pipeline);
 
         return Response.success(res, {
             data: classes,
@@ -62,7 +107,7 @@ const updateClass = async (req, res) => {
             updated_at: IST('database')
         };
 
-        await DB.updateOne(Classes, query, data);
+        await DB.updateOne(Classes, { query, data });
 
         return Response.success(res, {
             data: data,

@@ -32,12 +32,10 @@ import { getRole } from 'api/role/roleApi';
 // constant
 const getInitialValues = (event, range, userDetail) => {
     const newEvent = {
-        name: !event ? userDetail?.name : '',
-        userId: !event ? userDetail?.userId : '',
-        phoneNumber: !event ? userDetail?.phoneNumber : '',
+        user_id: !event ? userDetail?.user_id : '',
         password: '',
         formEvent: event,
-        role: !event ? userDetail?.role : ''
+        role: !event ? userDetail?.role_id : ''
     };
 
     if (event || range) {
@@ -71,33 +69,28 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
 
     // validation
     const EventSchema = Yup.object().shape({
-        name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('Name is required'),
-        phoneNumber: Yup.string().test('valid-phone', 'Number must be 10 number and cotains only numbers', (value) => {
-            if (!value) return false;
-            if (value.length < 10 || value.length > 10) return false;
-            return /^[0-9]+$/.test(value);
-        }),
-        userId: Yup.string().required('User Id is required'),
+        user_id: Yup.string().required('User Id is required'),
         formEvent: Yup.boolean(),
         password: Yup.string().when('formEvent', {
             is: true, // Only required when formEvent is true
             then: (schema) => schema.required('Password is required'),
             otherwise: (schema) => schema.notRequired() // Explicitly not required
         }),
-        role: Yup.number().required('Role Is Required')
+        role: Yup.string().required('Role Is Required')
     });
 
     // submit form
     const formik = useFormik({
         initialValues: getInitialValues(event, range, userDetail),
         validationSchema: EventSchema,
+        enableReinitialize: true,
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
                 const data = values;
                 if (event) {
                     handleCreate(data);
                 } else {
-                    handleUpdate(userDetail.id, data);
+                    handleUpdate(userDetail._id, data);
                 }
             } catch (error) {
                 console.error(error);
@@ -120,29 +113,21 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Name</Typography>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('name')}
-                                    error={Boolean(touched.name && errors.name)}
-                                    helperText={touched.name && errors.name}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">User Id</Typography>
                                 <TextField
                                     size="small"
+                                    autoComplete="off"
                                     fullWidth
-                                    {...getFieldProps('userId')}
-                                    error={Boolean(touched.userId && errors.userId)}
-                                    helperText={touched.userId && errors.userId}
+                                    {...getFieldProps('user_id')}
+                                    error={Boolean(touched.user_id && errors.user_id)}
+                                    helperText={touched.user_id && errors.user_id}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Password</Typography>
                                 <TextField
                                     size="small"
+                                    autoComplete="off"
                                     fullWidth
                                     {...getFieldProps('password')}
                                     error={Boolean(touched.password && errors.password)}
@@ -158,16 +143,6 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Phone Number</Typography>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('phoneNumber')}
-                                    error={Boolean(touched.phoneNumber && errors.phoneNumber)}
-                                    helperText={touched.phoneNumber && errors.phoneNumber}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Role</Typography>
                                 <TextField
                                     select
@@ -178,7 +153,7 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                     helperText={touched.role && errors.role}
                                 >
                                     {roleList.map((option) => (
-                                        <MenuItem key={option.id} value={option.id}>
+                                        <MenuItem key={option._id} value={option._id}>
                                             {option.role}
                                         </MenuItem>
                                     ))}

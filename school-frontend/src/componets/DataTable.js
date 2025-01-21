@@ -33,6 +33,8 @@ import SearchIcon from '@mui/icons-material/Search';
 // custom component
 import MainCard from 'componets/MainCard';
 
+// theme
+
 const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
     const [rows, setRows] = useState([]);
     const [order, setOrder] = useState('asc');
@@ -264,7 +266,11 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
     return (
         <MainCard
             border={true}
-            title={<Typography variant="h5">{tableTitle}</Typography>}
+            title={
+                <Typography variant="h5" color="white" fontWeight="bold">
+                    {tableTitle}
+                </Typography>
+            }
             secondary={
                 <Stack direction="row" spacing={2} alignItems="center">
                     {addButton && (
@@ -275,7 +281,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                 </Stack>
             }
         >
-            <CardContent>
+            <CardContent style={{ paddingLeft: '0px' }}>
                 <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField

@@ -1,11 +1,17 @@
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import useSnackbarAlert from 'customHook/alert';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 // third-party
 import { Form, FormikProvider, useFormik } from 'formik';
 import _ from 'lodash';
 import * as Yup from 'yup';
+
+// apis
+import { getSubjects } from 'api/subject/subjectApi';
+import { getTeachers } from 'api/teacher/teacherApi';
 
 // project imports
 import { gridSpacing } from 'constant/constant';
@@ -19,9 +25,9 @@ const getInitialValues = (event, range, classDetail) => {
         total_strength: !event ? classDetail?.total_strength : '',
         total_student_capacity: !event ? classDetail?.total_student_capacity : '',
         class_teacher: !event ? classDetail?.class_teacher : '',
-        class_subjects: !event ? classDetail?.class_subjects : '',
-        class_room_no: !event ? classDetail?.class_room_no : '',
-        class_equipments: !event ? classDetail?.class_equipments : ''
+        class_subjects: !event ? classDetail?.class_subjects : [],
+        class_room_no: !event ? classDetail?.class_room_no : ''
+        // class_equipments: !event ? classDetail?.class_equipments : ''
     };
 
     if (event || range) {
@@ -32,6 +38,38 @@ const getInitialValues = (event, range, classDetail) => {
 };
 
 const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, classDetail }) => {
+    const { openTostar, SnackbarComponent } = useSnackbarAlert();
+    const [teacherList, setTeacherList] = useState([]);
+    const [subjectList, setSubjectList] = useState([]);
+
+    // fetch teacher list
+    const fetchTeachers = async () => {
+        try {
+            const response = await getTeachers();
+            if (typeof response === 'string') {
+                openTostar(response, 'error');
+            } else {
+                setTeacherList(response);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    // fetch subject list
+    const fetchSubjects = async () => {
+        try {
+            const response = await getSubjects();
+            if (typeof response === 'string') {
+                openTostar(response, 'error');
+            } else {
+                setSubjectList(response);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     // validation
     const EventSchema = Yup.object().shape({
         class_name: Yup.string().max(30, 'Class Name must be less than or equal to 30 characters').required('This is required'),
@@ -39,8 +77,8 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
         total_student_capacity: Yup.number().required('This feild is Required'),
         class_teacher: Yup.string().required('This feild is required'),
         class_subjects: Yup.array().required('This feild is required'),
-        class_room_no: Yup.number().required('This feild is required'),
-        class_equipments: Yup.array().required('This feild is required')
+        class_room_no: Yup.number().required('This feild is required')
+        // class_equipments: Yup.array().required('This feild is required')
     });
 
     // submit form
@@ -53,7 +91,7 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                 if (event) {
                     handleCreate(data);
                 } else {
-                    handleUpdate(classDetail.id, data);
+                    handleUpdate(classDetail._id, data);
                 }
             } catch (error) {
                 console.error(error);
@@ -63,8 +101,20 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
 
     const { values, errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
+    React.useEffect(() => {
+        let isMounted = true;
+        if (isMounted) {
+            fetchTeachers();
+            fetchSubjects();
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     return (
         <FormikProvider value={formik}>
+            <SnackbarComponent />
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
                     <DialogTitle>{event ? 'Add Class' : 'Edit Class'}</DialogTitle>
@@ -77,6 +127,7 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('class_name')}
+                                    onChange={(e) => formik.setFieldValue('class_name', e.target.value.toUpperCase())}
                                     error={Boolean(touched.class_name && errors.class_name)}
                                     helperText={touched.class_name && errors.class_name}
                                 />
@@ -111,8 +162,15 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                     error={Boolean(touched.class_teacher && errors.class_teacher)}
                                     helperText={touched.class_teacher && errors.class_teacher}
                                 >
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    {teacherList.length ? (
+                                        teacherList.map((option) => (
+                                            <MenuItem key={option._id} value={option._id}>
+                                                {option.name}
+                                            </MenuItem>
+                                        ))
+                                    ) : (
+                                        <MenuItem disabled>NO CLASS FOUND</MenuItem>
+                                    )}
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -124,9 +182,31 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                     {...getFieldProps('class_subjects')}
                                     error={Boolean(touched.class_subjects && errors.class_subjects)}
                                     helperText={touched.class_subjects && errors.class_subjects}
+                                    SelectProps={{
+                                        multiple: true,
+                                        value: values.class_subjects || [],
+                                        onChange: (event) => {
+                                            const value = event.target.value;
+                                            formik.setFieldValue('class_subjects', typeof value === 'string' ? value.split(',') : value);
+                                        },
+                                        renderValue: (selected) =>
+                                            selected
+                                                .map((id) => {
+                                                    const subject = subjectList.find((item) => item._id === id);
+                                                    return subject ? subject.name : '';
+                                                })
+                                                .join(', ')
+                                    }}
                                 >
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    {subjectList.length ? (
+                                        subjectList.map((subject) => (
+                                            <MenuItem key={subject._id} value={subject._id}>
+                                                {subject.name}
+                                            </MenuItem>
+                                        ))
+                                    ) : (
+                                        <MenuItem disabled>NO CLASS FOUND</MenuItem>
+                                    )}
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -139,7 +219,7 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                     helperText={touched.class_room_no && errors.class_room_no}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
+                            {/* <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Equipments</Typography>
                                 <TextField
                                     select
@@ -152,7 +232,7 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                     <MenuItem value="FEMALE">FEMALE</MenuItem>
                                     <MenuItem value="OTHER">OTHER</MenuItem>
                                 </TextField>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </DialogContent>
 

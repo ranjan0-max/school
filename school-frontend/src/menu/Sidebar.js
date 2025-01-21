@@ -1,4 +1,7 @@
-import SchoolIcon from '@mui/icons-material/School';
+// icons
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+
 import {
     Box,
     Collapse,
@@ -9,64 +12,91 @@ import {
     ListItem,
     ListItemButton,
     ListItemText,
+    Popover,
     Toolbar,
     Typography
 } from '@mui/material';
 import { useState } from 'react';
 
-// icons
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-
-const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick }) => {
+const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawerOpen, handleDrawer }) => {
     const [openGroups, setOpenGroups] = useState({});
-    const [selectedGroup, setSelectedGroup] = useState(null); // Track the selected group
-    const [selectedItem, setSelectedItem] = useState(null); // Track the selected item
+    const [selectedGroup, setSelectedGroup] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [popoverItems, setPopoverItems] = useState([]);
 
-    // Toggle groups and close the others
     const handleGroupSelection = (group) => {
-        setSelectedGroup(group); // Set the selected group
-        setOpenGroups((prevState) => {
-            const newOpenGroups = {};
-            newOpenGroups[group] = !prevState[group]; // Toggle the selected group
-            return newOpenGroups; // Only the selected group will be toggled
-        });
+        setSelectedGroup(group);
+        setOpenGroups((prevState) => ({
+            ...prevState,
+            [group]: !prevState[group]
+        }));
+    };
+
+    const handlePopoverOpen = (event, items, group) => {
+        if (!isDrawerOpen) {
+            setSelectedGroup(group);
+            setAnchorEl(event.currentTarget);
+            setPopoverItems(items);
+        }
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+        setPopoverItems([]);
     };
 
     const handleItemSelection = (menu) => {
-        setSelectedItem(menu.title); // Set the selected item
-        handleMenuItemClick(menu.url, menu.title); // Call the parent function to handle navigation
+        setSelectedItem(menu.title);
+        handleMenuItemClick(menu.url, menu.title);
+        handlePopoverClose();
     };
 
     return (
         <Drawer
             sx={{
-                width: drawerWidth,
+                width: isDrawerOpen ? drawerWidth : 72,
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: drawerWidth,
+                    height: 'calc(100vh - 54px - 80px)',
+                    width: isDrawerOpen ? drawerWidth : 72,
                     boxSizing: 'border-box',
-                    bgcolor: 'white',
-                    zIndex: (theme) => theme.zIndex.appBar - 1 // Ensure Drawer is below AppBar
+                    overflowX: 'hidden',
+                    transition: 'width 0.3s ease',
+                    background: 'rgb(38,92,152)',
+                    borderRadius: '10px',
+                    marginTop: '5%',
+                    marginLeft: '1%'
                 }
             }}
             variant="permanent"
             anchor="left"
         >
-            <Toolbar style={{ paddingLeft: '5%' }}>
-                <SchoolIcon />
-                <Typography sx={{ fontWeight: 'bolder', marginLeft: 1 }}>School Manager</Typography>
+            <Toolbar sx={{ pl: 0 }}>
+                <IconButton
+                    sx={{
+                        color: 'white',
+                        pl: 0
+                    }}
+                    onClick={handleDrawer}
+                >
+                    <MenuIcon />
+                </IconButton>
             </Toolbar>
             <List disablePadding>
                 {accessableMenuList.map((menu) => (
                     <div key={menu.group}>
                         <Divider />
                         <ListItem
-                            key={menu.group}
                             disablePadding
                             sx={{
-                                backgroundColor: selectedGroup === menu.group ? '#bbeeff' : 'inherit', // Background for selected group
-                                '&:hover': { backgroundColor: '#bbeeff' }, // Hover effect on group
-                                transition: 'background-color 0.3s ease' // Smooth transition
+                                backgroundColor: selectedGroup === menu.group ? '#bbeeff' : 'inherit',
+                                '&:hover': {
+                                    backgroundColor: '#aadcee'
+                                },
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: isDrawerOpen ? 'start' : 'center'
                             }}
                         >
                             <Box
@@ -74,62 +104,79 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick }) => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     width: '100%',
-                                    paddingLeft: 2 // Add some padding for better spacing
+                                    paddingLeft: isDrawerOpen ? 2 : 0,
+                                    justifyContent: 'center'
                                 }}
-                                onClick={() => handleGroupSelection(menu.group)} // Select group
                             >
                                 <IconButton
                                     sx={{
-                                        color: selectedGroup === menu.group ? 'primary.main' : 'inherit', // Highlight the selected icon
-                                        transition: 'color 0.3s'
+                                        color: selectedGroup === menu.group ? 'primary.main' : 'white',
+                                        '&:hover': {
+                                            color: 'primary.main'
+                                        }
                                     }}
+                                    onClick={(event) => handlePopoverOpen(event, menu.items, menu.group)}
                                 >
                                     {menu.icon}
                                 </IconButton>
-                                <ListItemButton sx={{ flexGrow: 1 }}>
-                                    <ListItemText
-                                        primary={
-                                            <Typography
-                                                sx={{
-                                                    fontWeight: 600,
-                                                    fontSize: '14px',
-                                                    color: selectedGroup === menu.group ? 'primary.main' : 'inherit', // Highlight the label of selected group
-                                                    transition: 'color 0.3s'
-                                                }}
-                                            >
-                                                {menu.group}
-                                            </Typography>
-                                        }
-                                    />
-                                </ListItemButton>
-                                <IconButton sx={{ marginLeft: 1 }}>{openGroups[menu.group] ? <ExpandLess /> : <ExpandMore />}</IconButton>
+                                {isDrawerOpen && (
+                                    <ListItemButton
+                                        onClick={() => handleGroupSelection(menu.group)}
+                                        sx={{
+                                            flexGrow: 1,
+                                            '&:hover .MuiTypography-root': {
+                                                color: 'primary.main'
+                                            }
+                                        }}
+                                    >
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    sx={{
+                                                        fontWeight: 600,
+                                                        fontSize: '14px',
+                                                        textAlign: 'center',
+                                                        color: selectedGroup === menu.group ? 'primary.main' : 'white'
+                                                    }}
+                                                >
+                                                    {menu.group}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItemButton>
+                                )}
+                                {isDrawerOpen && (
+                                    <IconButton
+                                        onClick={() => handleGroupSelection(menu.group)}
+                                        sx={{
+                                            color: selectedGroup === menu.group ? 'primary.main' : 'white',
+                                            '&:hover': {
+                                                color: 'primary.main'
+                                            }
+                                        }}
+                                    >
+                                        {openGroups[menu.group] ? <ExpandLess /> : <ExpandMore />}
+                                    </IconButton>
+                                )}
                             </Box>
                         </ListItem>
 
-                        {/* Collapse the menu items when group is opened */}
-                        <Collapse key={menu.id} in={openGroups[menu.group]} timeout="auto" unmountOnExit>
+                        <Collapse in={openGroups[menu.group] && isDrawerOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding sx={{ pl: 2 }}>
-                                {menu.items.map((menu) => (
-                                    <ListItem
-                                        key={menu.id}
-                                        disablePadding
-                                        sx={{
-                                            '&:hover': { backgroundColor: '#bbeeff' }, // Hover effect on menu items
-                                            transition: 'background-color 0.3s ease' // Smooth transition
-                                        }}
-                                    >
-                                        <ListItemButton onClick={() => handleItemSelection(menu)}>
+                                {menu.items.map((subMenu, index) => (
+                                    <ListItem key={index} disablePadding>
+                                        <ListItemButton onClick={() => handleItemSelection(subMenu)}>
                                             <ListItemText
                                                 primary={
                                                     <Typography
                                                         sx={{
-                                                            display: 'flex',
-                                                            fontSize: '14px',
-                                                            color: 'gray',
-                                                            justifyContent: 'center'
+                                                            fontSize: selectedItem === subMenu.title ? '16px' : '14px',
+                                                            color: selectedItem === subMenu.title ? 'white' : 'white',
+                                                            fontWeight: selectedItem === subMenu.title ? 'bold' : '',
+                                                            textAlign: 'center'
                                                         }}
                                                     >
-                                                        {menu.title}
+                                                        {subMenu.title}
                                                     </Typography>
                                                 }
                                             />
@@ -141,6 +188,41 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick }) => {
                     </div>
                 ))}
             </List>
+
+            {/* Popover for menu items */}
+            <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                sx={{
+                    marginLeft: '3%'
+                }}
+            >
+                <List sx={{ width: '150px' }}>
+                    {popoverItems.map((menu) => (
+                        <ListItem
+                            key={menu.id}
+                            button
+                            onClick={() => {
+                                handleItemSelection(menu);
+                            }}
+                            sx={{
+                                '&:hover': { backgroundColor: '#bbeeff' }
+                            }}
+                        >
+                            <ListItemText primary={menu.title} />
+                        </ListItem>
+                    ))}
+                </List>
+            </Popover>
         </Drawer>
     );
 };

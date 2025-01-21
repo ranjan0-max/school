@@ -15,7 +15,7 @@ const createStudent = async (req, res) => {
 
         const userExist = await DB.readOne(User, { user_id: req.body.name });
 
-        let user_id = userExist._id;
+        let user_id = userExist?._id;
         if (!userExist) {
             const userData = {
                 user_id: req.body.name,
@@ -56,7 +56,7 @@ const createStudent = async (req, res) => {
 // get the student list
 const getStudentList = async (req, res) => {
     try {
-        const students = await DB.read(Student, req.query);
+        const students = await DB.findDetails(Student, req.query);
 
         return Response.success(res, {
             data: students,
