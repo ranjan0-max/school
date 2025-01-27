@@ -42,15 +42,7 @@ const init = async (data) => {
         const configData = [
             {
                 user_id: '',
-                config: [
-                    'salesGroup',
-                    'salesCollapse',
-                    'kanban',
-                    'masterGroup',
-                    'masterCollapse',
-                    'user',
-                    'classes'
-                ],
+                config: ['master', 'user', 'classes', 'students', 'teachers', 'staff', 'subjects', 'operations', 'timeTable'],
                 created_at: IST(),
                 updated_at: IST()
             }

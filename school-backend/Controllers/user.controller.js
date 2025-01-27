@@ -17,7 +17,7 @@ const User = require('../Database/Models/user.model');
 const createUser = async (req, res, next) => {
     try {
         // checking email is unique
-        await DB.isUnique(User, { email: req.body.email });
+        await DB.isUnique(User, { user_id: req.body.user_id });
 
         if (req.body.password) {
             const passwordHash = await AuthHelper.generateHash(req.body.password);

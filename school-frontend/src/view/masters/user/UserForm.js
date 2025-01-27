@@ -45,7 +45,7 @@ const getInitialValues = (event, range, userDetail) => {
     return newEvent;
 };
 
-const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDetail, itemList }) => {
+const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDetail, fontFamily }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [roleList, setRoleList] = useState([]);
 
@@ -108,13 +108,18 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
         <FormikProvider value={formik}>
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add User' : 'Edit User'}</DialogTitle>
+                    <DialogTitle style={{ fontFamily: fontFamily }}>{event ? 'Add User' : 'Edit User'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">User Id</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    User Id
+                                </Typography>
                                 <TextField
+                                    sx={{
+                                        fontFamily: fontFamily
+                                    }}
                                     size="small"
                                     autoComplete="off"
                                     fullWidth
@@ -124,8 +129,13 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Password</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Password
+                                </Typography>
                                 <TextField
+                                    sx={{
+                                        fontFamily: fontFamily
+                                    }}
                                     size="small"
                                     autoComplete="off"
                                     fullWidth
@@ -143,8 +153,15 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Role</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Role
+                                </Typography>
                                 <TextField
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     select
                                     size="small"
                                     fullWidth
@@ -153,7 +170,7 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                     helperText={touched.role && errors.role}
                                 >
                                     {roleList.map((option) => (
-                                        <MenuItem key={option._id} value={option._id}>
+                                        <MenuItem sx={{ fontFamily: fontFamily }} key={option._id} value={option._id}>
                                             {option.role}
                                         </MenuItem>
                                     ))}
@@ -166,10 +183,24 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                         <Grid container justifyContent="center" alignItems="center">
                             <Grid item>
                                 <Stack direction="row" spacing={2} alignItems="center">
-                                    <Button type="button" variant="outlined" onClick={onCancel}>
+                                    <Button
+                                        type="button"
+                                        variant="outlined"
+                                        onClick={onCancel}
+                                        sx={{
+                                            fontFamily: fontFamily
+                                        }}
+                                    >
                                         Cancel
                                     </Button>
-                                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        disabled={isSubmitting}
+                                        sx={{
+                                            fontFamily: fontFamily
+                                        }}
+                                    >
                                         {!event ? 'Update' : 'Save'}
                                     </Button>
                                 </Stack>

@@ -63,7 +63,7 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                     boxSizing: 'border-box',
                     overflowX: 'hidden',
                     transition: 'width 0.3s ease',
-                    background: 'rgb(38,92,152)',
+                    background: '#189ab4',
                     borderRadius: '10px',
                     marginTop: '5%',
                     marginLeft: '1%'
@@ -135,6 +135,7 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                                                     sx={{
                                                         fontWeight: 600,
                                                         fontSize: '14px',
+                                                        fontFamily: 'Copperplate, Fantasy',
                                                         textAlign: 'center',
                                                         color: selectedGroup === menu.group ? 'primary.main' : 'white'
                                                     }}
@@ -170,10 +171,11 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                                                 primary={
                                                     <Typography
                                                         sx={{
-                                                            fontSize: selectedItem === subMenu.title ? '16px' : '14px',
+                                                            fontSize: selectedItem === subMenu.title ? '18px' : '14px',
                                                             color: selectedItem === subMenu.title ? 'white' : 'white',
                                                             fontWeight: selectedItem === subMenu.title ? 'bold' : '',
-                                                            textAlign: 'center'
+                                                            textAlign: 'center',
+                                                            fontFamily: 'Copperplate, Fantasy'
                                                         }}
                                                     >
                                                         {subMenu.title}

@@ -4,19 +4,19 @@ import { createTheme } from '@mui/material/styles';
 const Theme = createTheme({
     palette: {
         primary: {
-            main: 'rgb(15,48,93)'
+            main: '#189ab4'
         },
         secondary: {
-            main: 'rgb(38,92,152)'
+            main: '#75e6da'
         },
         background: {
             default: 'white'
         },
         customBackground: {
-            default: 'rgb(60,134,206)'
+            default: '#189ab4'
         },
         hoverBackground: {
-            main: 'rgb(124,186,223)'
+            main: '#d4f1f4'
         }
     },
     typography: {

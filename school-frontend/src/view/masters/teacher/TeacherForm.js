@@ -34,7 +34,7 @@ const getInitialValues = (event, range, teacherDetail) => {
     return newEvent;
 };
 
-const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teacherDetail }) => {
+const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teacherDetail, fontFamily }) => {
     // validation
     const EventSchema = Yup.object().shape({
         name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('This is required'),
@@ -83,9 +83,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Name
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
+                                    sx={{
+                                        fontFamily: fontFamily
+                                    }}
                                     fullWidth
                                     {...getFieldProps('name')}
                                     error={Boolean(touched.name && errors.name)}
@@ -93,8 +103,15 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Gender</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Gender
+                                </Typography>
                                 <TextField
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     select
                                     size="small"
                                     fullWidth
@@ -102,15 +119,28 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     error={Boolean(touched.gender && errors.gender)}
                                     helperText={touched.gender && errors.gender}
                                 >
-                                    <MenuItem value="MALE">MALE</MenuItem>
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="MALE">
+                                        MALE
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="FEMALE">
+                                        FEMALE
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="OTHER">
+                                        OTHER
+                                    </MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">DOB</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    DOB
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     type="date"
                                     fullWidth
                                     {...getFieldProps('dob')}
@@ -122,9 +152,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Email</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Email
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
+                                    sx={{
+                                        fontFamily: fontFamily
+                                    }}
                                     fullWidth
                                     {...getFieldProps('email')}
                                     error={Boolean(touched.email && errors.email)}
@@ -132,9 +172,16 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">D.O Joining</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    D.O Joining
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     type="date"
                                     fullWidth
                                     {...getFieldProps('date_of_joining')}
@@ -146,7 +193,9 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Subjects</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Subjects
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
@@ -161,18 +210,36 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                         },
                                         renderValue: (selected) => selected.join(', ') // Customize how the selected values are displayed
                                     }}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     error={Boolean(touched.subject && errors.subject)}
                                     helperText={touched.subject && errors.subject}
                                 >
-                                    <MenuItem value="SCIENCE">SCIENCE</MenuItem>
-                                    <MenuItem value="MATH">MATH</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="SCIENCE">
+                                        SCIENCE
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="MATH">
+                                        MATH
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="OTHER">
+                                        OTHER
+                                    </MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Father Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Father Name
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     fullWidth
                                     {...getFieldProps('father_name')}
                                     error={Boolean(touched.father_name && errors.father_name)}
@@ -180,9 +247,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Contact Number</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Contact Number
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
+                                    sx={{
+                                        fontFamily: fontFamily
+                                    }}
                                     fullWidth
                                     {...getFieldProps('contact_number')}
                                     error={Boolean(touched.contact_number && errors.contact_number)}
@@ -190,9 +267,16 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Mother Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Mother Name
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     fullWidth
                                     {...getFieldProps('mother_name')}
                                     error={Boolean(touched.mother_name && errors.mother_name)}
@@ -200,9 +284,16 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Address</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Address
+                                </Typography>
                                 <TextField
                                     size="small"
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     fullWidth
                                     {...getFieldProps('address')}
                                     error={Boolean(touched.address && errors.address)}
@@ -210,7 +301,9 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Today Presence</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Today Presence
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
@@ -218,9 +311,18 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     {...getFieldProps('today_presence')}
                                     error={Boolean(touched.today_presence && errors.today_presence)}
                                     helperText={touched.today_presence && errors.today_presence}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                 >
-                                    <MenuItem value={true}>YES</MenuItem>
-                                    <MenuItem value={false}>NO</MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value={true}>
+                                        YES
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value={false}>
+                                        NO
+                                    </MenuItem>
                                 </TextField>
                             </Grid>
                         </Grid>

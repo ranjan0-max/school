@@ -126,6 +126,7 @@ const Student = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     userDetail={userDetail}
+                    fontFamily="Copperplate, Fantasy"
                 />
             </Dialog>
         </>

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 // icons
-import ClassIcon from '@mui/icons-material/Class';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 // custom hook
@@ -44,7 +44,7 @@ export default function PermanentDrawerLeft() {
                 masterMenus = menuGroup.children;
             }
 
-            if (menuGroup && menuGroup.id === 'salesGroup') {
+            if (menuGroup && menuGroup.id === 'operations') {
                 classMenus = menuGroup.children;
             }
         });
@@ -56,8 +56,8 @@ export default function PermanentDrawerLeft() {
                 items: masterMenus
             },
             {
-                group: 'Classes',
-                icon: <ClassIcon />,
+                group: 'Operations',
+                icon: <EngineeringIcon />,
                 items: classMenus
             }
         ];
@@ -119,7 +119,9 @@ export default function PermanentDrawerLeft() {
                         height: 'calc(100vh)' // Ensuring content fits without overlap
                     }}
                 >
-                    <Outlet />
+                    <Box sx={{ flex: 1 }}>
+                        <Outlet />
+                    </Box>
                 </Box>
             </Box>
             {/* Footer */}
@@ -128,7 +130,9 @@ export default function PermanentDrawerLeft() {
                 sx={{
                     bgcolor: 'background.paper',
                     textAlign: 'center',
-                    height: '48px'
+                    // height: '48px',
+                    position: 'sticky',
+                    bottom: 0
                 }}
             >
                 <Footer />

@@ -8,6 +8,7 @@ const controllerName = 'role.controller';
 const Student = require('../Database/Models/student.model');
 const User = require('../Database/Models/user.model');
 const Role = require('../Database/Models/role.model');
+const mongoose = require('mongoose');
 
 const createStudent = async (req, res) => {
     try {
@@ -56,7 +57,51 @@ const createStudent = async (req, res) => {
 // get the student list
 const getStudentList = async (req, res) => {
     try {
-        const students = await DB.findDetails(Student, req.query);
+        const query = req.query;
+
+        delete query.auth_user_id;
+        delete query.user_role;
+
+        if (query.current_class) {
+            query.current_class = new mongoose.Types.ObjectId(query.current_class);
+        }
+
+        const pipeline = [
+            {
+                $match: {
+                    ...query
+                }
+            },
+            {
+                $lookup: {
+                    from: 'classes',
+                    localField: 'current_class',
+                    foreignField: '_id',
+                    as: 'class'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$class',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    document: '$$ROOT',
+                    class_name: '$class.class_name'
+                }
+            },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: ['$document', { class_name: '$class_name' }]
+                    }
+                }
+            }
+        ];
+
+        const students = await DB.aggregation(Student, pipeline);
 
         return Response.success(res, {
             data: students,

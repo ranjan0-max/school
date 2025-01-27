@@ -1,6 +1,7 @@
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 // third-party
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -10,7 +11,8 @@ import * as Yup from 'yup';
 // project imports
 import { gridSpacing } from 'constant/constant';
 
-//icons
+//api
+import { getClasses } from 'api/classes/classesApi';
 
 // constant
 const getInitialValues = (event, range, studentDetail) => {
@@ -36,11 +38,27 @@ const getInitialValues = (event, range, studentDetail) => {
 };
 
 const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, studentDetail }) => {
+    const [classList, setClassList] = useState([]);
+
+    // fecth classes
+    const fetchClasses = async () => {
+        try {
+            const response = await getClasses();
+            if (typeof response === 'string') {
+                console.log(response);
+            } else {
+                setClassList(response);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     // validation
     const EventSchema = Yup.object().shape({
         name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('Name is required'),
         gender: Yup.string().required('Gender is required'),
-        current_class: Yup.number().required('Class Is Required'),
+        current_class: Yup.string().required('Class Is Required'),
         class_roll_no: Yup.number().typeError('Class Roll No must be a number'),
         dob: Yup.date().required('Date is required'),
         email: Yup.string().email('Invalid email address'),
@@ -79,6 +97,10 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
 
     const { values, errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
+    React.useEffect(() => {
+        fetchClasses();
+    }, []);
+
     return (
         <FormikProvider value={formik}>
             <LocalizationProvider>
@@ -115,14 +137,22 @@ const StudentForm = ({ event, range, handleCreate, handleUpdate, onCancel, stude
                             <Grid item xs={12} sm={6} md={6}>
                                 <Typography marginBottom="5px">Current Class</Typography>
                                 <TextField
+                                    select
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('current_class')}
                                     error={Boolean(touched.current_class && errors.current_class)}
                                     helperText={touched.current_class && errors.current_class}
                                 >
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    {classList.length ? (
+                                        classList.map((subject) => (
+                                            <MenuItem key={subject._id} value={subject._id}>
+                                                {subject.class_name}
+                                            </MenuItem>
+                                        ))
+                                    ) : (
+                                        <MenuItem disabled>NO CLASS FOUND</MenuItem>
+                                    )}
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>

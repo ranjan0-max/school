@@ -6,7 +6,6 @@ import {
     IconButton,
     InputAdornment,
     Paper,
-    Stack,
     Table,
     TableBody,
     TableCell,
@@ -85,7 +84,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                                     active={orderBy === headers.id}
                                     direction={orderBy === headers.id ? order : 'asc'}
                                     onClick={createSortHandler(headers.id)}
-                                    style={{ fontWeight: 'bolder' }}
+                                    style={{ fontWeight: 'bolder', fontFamily: 'Copperplate, Fantasy' }}
                                 >
                                     {headers.label}
                                     {orderBy === headers.id ? (
@@ -97,7 +96,11 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                             </TableCell>
                         ))}
                     {numSelected <= 0 && (
-                        <TableCell sortDirection={false} align="center" sx={{ pr: 3, fontWeight: 'bolder', background: '#d7ddde' }}>
+                        <TableCell
+                            sortDirection={false}
+                            align="center"
+                            sx={{ pr: 3, fontWeight: 'bolder', background: '#d7ddde', fontFamily: 'Copperplate, Fantasy' }}
+                        >
                             ACTION
                         </TableCell>
                     )}
@@ -267,18 +270,9 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
         <MainCard
             border={true}
             title={
-                <Typography variant="h5" color="white" fontWeight="bold">
+                <Typography variant="h5" color="white" fontWeight="bold" fontFamily="Copperplate, Fantasy">
                     {tableTitle}
                 </Typography>
-            }
-            secondary={
-                <Stack direction="row" spacing={2} alignItems="center">
-                    {addButton && (
-                        <Button color="primary" variant="contained" onClick={addButton}>
-                            Add
-                        </Button>
-                    )}
-                </Stack>
             }
         >
             <CardContent style={{ paddingLeft: '0px' }}>
@@ -290,7 +284,18 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                                     <InputAdornment position="start">
                                         <SearchIcon fontSize="small" />
                                     </InputAdornment>
-                                )
+                                ),
+                                sx: {
+                                    '&::placeholder': {
+                                        fontFamily: 'Copperplate, Fantasy',
+                                        fontSize: '16px'
+                                    }
+                                }
+                            }}
+                            inputProps={{
+                                style: {
+                                    fontFamily: 'Copperplate, Fantasy'
+                                }
                             }}
                             onChange={handleSearch}
                             placeholder="Search"
@@ -298,9 +303,16 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                             size="small"
                         />
                     </Grid>
+                    <Grid item xs={12} sm={6} container justifyContent="flex-end">
+                        {addButton && (
+                            <Button color="primary" variant="contained" onClick={addButton} style={{ fontFamily: 'Copperplate, Fantasy' }}>
+                                Add
+                            </Button>
+                        )}
+                    </Grid>
                 </Grid>
             </CardContent>
-            <TableContainer component={Paper} sx={{ maxHeight: 700 }}>
+            <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
                 <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                     <EnhancedTableHead
                         numSelected={selected.length}
@@ -315,7 +327,9 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                         {rows.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={headers.length + 1} align="center">
-                                    <Typography variant="subtitle1">NO DATA AVAILABLE IN TABLE</Typography>
+                                    <Typography variant="subtitle1" fontFamily="Copperplate, Fantasy">
+                                        NO DATA AVAILABLE IN TABLE
+                                    </Typography>
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -345,6 +359,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                                                     <Typography
                                                         variant="subtitle1"
                                                         color={header.id === 'jobNumber' ? 'secondary' : 'inherit'}
+                                                        fontFamily="Copperplate, Fantasy"
                                                     >
                                                         {row[header.id]}
                                                     </Typography>
@@ -375,6 +390,18 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                    '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+                        fontFamily: 'Copperplate, Fantasy',
+                        fontSize: '14px'
+                    },
+                    '& .MuiTablePagination-select': {
+                        fontFamily: 'Copperplate, Fantasy'
+                    },
+                    '& .MuiTablePagination-actions button': {
+                        fontFamily: 'Copperplate, Fantasy'
+                    }
+                }}
             />
         </MainCard>
     );

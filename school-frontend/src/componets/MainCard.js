@@ -8,8 +8,11 @@ import { useTheme } from '@mui/material/styles';
 // constant
 const headerSX = {
     '& .MuiCardHeader-action': { mr: 0 },
-    background: 'rgb(124,186,223)',
-    borderRadius: '5px'
+    background: '#189ab4',
+    borderRadius: '5px',
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center'
 };
 
 // ==============================|| CUSTOM MAIN CARD ||============================== //
@@ -39,7 +42,8 @@ const MainCard = React.forwardRef(
                 ref={ref}
                 {...others}
                 sx={{
-                    padding: '2%',
+                    marginTop: '5%',
+                    padding: '1%',
                     border: '2px solid',
                     borderColor: theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.grey[300] + 98,
                     ':hover': {
@@ -65,7 +69,7 @@ const MainCard = React.forwardRef(
                     <CardContent
                         sx={contentSX}
                         className={contentClass}
-                        style={{ border: 'solid 2px rgb(245 243 243)', borderRadius: '5px', marginTop: '10px' }}
+                        style={{ border: 'solid 2px rgb(245 243 243)', borderRadius: '5px', marginTop: '1%' }}
                     >
                         {children}
                     </CardContent>

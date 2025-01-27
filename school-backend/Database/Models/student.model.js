@@ -14,7 +14,7 @@ const studentSchema = new Schema({
     class_roll_no: { type: Number },
     tenth_roll_no: { type: Number },
     twelth_roll_no: { type: Number },
-    current_class: { type: String },
+    current_class: { type: Schema.Types.ObjectId },
     today_presence: { type: Boolean },
     role_id: { type: Schema.Types.ObjectId, required: true },
     created_at: { type: Date, required: true },

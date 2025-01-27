@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import useSnackbarAlert from 'customHook/alert';
 import PropTypes from 'prop-types';
@@ -18,8 +18,7 @@ import { gridSpacing } from 'constant/constant';
 // constant
 const getInitialValues = (event, range, subjectDetail) => {
     const newEvent = {
-        name: !event ? subjectDetail?.name : '',
-        class_id: !event ? subjectDetail?.class_id : []
+        name: !event ? subjectDetail?.name : ''
     };
 
     if (event || range) {
@@ -47,8 +46,7 @@ const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subje
     };
     // validation
     const EventSchema = Yup.object().shape({
-        name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('This is required'),
-        class_id: Yup.array().required('This is required')
+        name: Yup.string().max(50, 'Name must be less than or equal to 50 characters').required('This is required')
     });
 
     // submit form
@@ -94,42 +92,6 @@ const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subje
                                     error={Boolean(touched.name && errors.name)}
                                     helperText={touched.name && errors.name}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Class</Typography>
-                                <TextField
-                                    select
-                                    size="small"
-                                    fullWidth
-                                    {...getFieldProps('class_id')}
-                                    error={Boolean(touched.class_id && errors.class_id)}
-                                    helperText={touched.class_id && errors.class_id}
-                                    SelectProps={{
-                                        multiple: true,
-                                        value: values.class_id || [],
-                                        onChange: (event) => {
-                                            const value = event.target.value;
-                                            formik.setFieldValue('class_id', typeof value === 'string' ? value.split(',') : value);
-                                        },
-                                        renderValue: (selected) =>
-                                            selected
-                                                .map((id) => {
-                                                    const classItem = classList.find((item) => item._id === id);
-                                                    return classItem ? classItem.class_name : '';
-                                                })
-                                                .join(', ')
-                                    }}
-                                >
-                                    {classList.length ? (
-                                        classList.map((classItem) => (
-                                            <MenuItem key={classItem._id} value={classItem._id}>
-                                                {classItem.class_name}
-                                            </MenuItem>
-                                        ))
-                                    ) : (
-                                        <MenuItem disabled>NO CLASS FOUND</MenuItem>
-                                    )}
-                                </TextField>
                             </Grid>
                         </Grid>
                     </DialogContent>

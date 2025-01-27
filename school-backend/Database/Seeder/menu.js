@@ -70,20 +70,20 @@ const data = [
     },
     {
         menu_id: 2,
-        id: 'salesGroup',
-        title: 'Sales',
+        id: 'operations',
+        title: 'Operations',
         type: 'group',
         accesss: false,
         breadcrumbs: false,
-        icon: 'icon_reciepts',
+        icon: 'icon_timeTable',
         children: [
             {
-                id: 'kanban',
-                title: 'Kanban',
+                id: 'timeTable',
+                title: 'Time Table',
                 type: 'item',
-                url: '/sales/enquiryBoard',
+                url: '/operations/timeTable',
                 accesss: false,
-                icon: 'sales_kanban',
+                icon: 'time_table',
                 breadcrumbs: false
             }
         ]

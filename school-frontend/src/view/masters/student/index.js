@@ -74,7 +74,7 @@ const Student = () => {
         { id: 'gender', label: 'GENDER', align: 'center' },
         { id: 'address', label: 'ADDRESS', align: 'center' },
         { id: 'class_roll_no', label: 'ROLL NO', align: 'center' },
-        { id: 'current_class', label: 'CLASS', align: 'center' }
+        { id: 'class_name', label: 'CLASS', align: 'center' }
     ];
 
     const actions = [
