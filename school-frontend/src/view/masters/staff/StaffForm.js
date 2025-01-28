@@ -32,7 +32,7 @@ const getInitialValues = (event, range, staffDetail) => {
     return newEvent;
 };
 
-const StaffForm = ({ event, range, handleCreate, handleUpdate, onCancel, staffDetail }) => {
+const StaffForm = ({ event, range, handleCreate, handleUpdate, onCancel, staffDetail, fontFamily }) => {
     // validation
     const EventSchema = Yup.object().shape({
         name: Yup.string().max(50, 'Name must be less than or equal to 255 characters').required('This is required'),
@@ -75,125 +75,327 @@ const StaffForm = ({ event, range, handleCreate, handleUpdate, onCancel, staffDe
         <FormikProvider value={formik}>
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add Staff' : 'Edit Staff'}</DialogTitle>
+                    <DialogTitle sx={{ fontFamily: fontFamily }}>{event ? 'Add Staff' : 'Edit Staff'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Name
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('name')}
                                     error={Boolean(touched.name && errors.name)}
-                                    helperText={touched.name && errors.name}
+                                    helperText={
+                                        touched.name && errors.name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Gender</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Gender
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
                                     fullWidth
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('gender')}
                                     error={Boolean(touched.gender && errors.gender)}
-                                    helperText={touched.gender && errors.gender}
+                                    helperText={
+                                        touched.gender && errors.gender ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.gender}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
-                                    <MenuItem value="MALE">MALE</MenuItem>
-                                    <MenuItem value="FEMALE">FEMALE</MenuItem>
-                                    <MenuItem value="OTHER">OTHER</MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="MALE">
+                                        MALE
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="FEMALE">
+                                        FEMALE
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value="OTHER">
+                                        OTHER
+                                    </MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">DOB</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    DOB
+                                </Typography>
                                 <TextField
                                     size="small"
                                     type="date"
                                     fullWidth
                                     {...getFieldProps('dob')}
                                     InputLabelProps={{
-                                        shrink: true
+                                        shrink: true,
+                                        fontFamily: fontFamily
+                                    }}
+                                    InputProps={{
+                                        sx: {
+                                            fontFamily: fontFamily
+                                        }
                                     }}
                                     error={Boolean(touched.dob && errors.dob)}
-                                    helperText={touched.dob && errors.dob}
+                                    helperText={
+                                        touched.dob && errors.dob ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.dob}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Email</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Email
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('email')}
                                     error={Boolean(touched.email && errors.email)}
-                                    helperText={touched.email && errors.email}
+                                    helperText={
+                                        touched.email && errors.email ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.email}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">D.O Joining</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    D.O Joining
+                                </Typography>
                                 <TextField
                                     size="small"
                                     type="date"
                                     fullWidth
                                     {...getFieldProps('date_of_joining')}
                                     InputLabelProps={{
-                                        shrink: true
+                                        shrink: true,
+                                        fontFamily: fontFamily
+                                    }}
+                                    InputProps={{
+                                        sx: {
+                                            fontFamily: fontFamily
+                                        }
                                     }}
                                     error={Boolean(touched.date_of_joining && errors.date_of_joining)}
-                                    helperText={touched.date_of_joining && errors.date_of_joining}
+                                    helperText={
+                                        touched.date_of_joining && errors.date_of_joining ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.date_of_joining}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Father Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Father Name
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('father_name')}
                                     error={Boolean(touched.father_name && errors.father_name)}
-                                    helperText={touched.father_name && errors.father_name}
+                                    helperText={
+                                        touched.father_name && errors.father_name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.father_name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Contact Number</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Contact Number
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('contact_number')}
                                     error={Boolean(touched.contact_number && errors.contact_number)}
-                                    helperText={touched.contact_number && errors.contact_number}
+                                    helperText={
+                                        touched.contact_number && errors.contact_number ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.contact_number}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Mother Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Mother Name
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('mother_name')}
                                     error={Boolean(touched.mother_name && errors.mother_name)}
-                                    helperText={touched.mother_name && errors.mother_name}
+                                    helperText={
+                                        touched.mother_name && errors.mother_name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.mother_name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Address</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Address
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('address')}
                                     error={Boolean(touched.address && errors.address)}
-                                    helperText={touched.address && errors.address}
+                                    helperText={
+                                        touched.address && errors.address ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.address}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Today Presence</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Today Presence
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
                                     fullWidth
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('today_presence')}
                                     error={Boolean(touched.today_presence && errors.today_presence)}
-                                    helperText={touched.today_presence && errors.today_presence}
+                                    helperText={
+                                        touched.today_presence && errors.today_presence ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.today_presence}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
-                                    <MenuItem value={true}>YES</MenuItem>
-                                    <MenuItem value={false}>NO</MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value={true}>
+                                        YES
+                                    </MenuItem>
+                                    <MenuItem sx={{ fontFamily: fontFamily }} value={false}>
+                                        NO
+                                    </MenuItem>
                                 </TextField>
                             </Grid>
                         </Grid>
@@ -203,10 +405,10 @@ const StaffForm = ({ event, range, handleCreate, handleUpdate, onCancel, staffDe
                         <Grid container justifyContent="center" alignItems="center">
                             <Grid item>
                                 <Stack direction="row" spacing={2} alignItems="center">
-                                    <Button type="button" variant="outlined" onClick={onCancel}>
+                                    <Button type="button" variant="outlined" onClick={onCancel} sx={{ fontFamily: fontFamily }}>
                                         Cancel
                                     </Button>
-                                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                                    <Button type="submit" variant="contained" disabled={isSubmitting} sx={{ fontFamily: fontFamily }}>
                                         {!event ? 'Update' : 'Save'}
                                     </Button>
                                 </Stack>

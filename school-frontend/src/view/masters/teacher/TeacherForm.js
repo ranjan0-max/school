@@ -78,7 +78,7 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
         <FormikProvider value={formik}>
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add Teacher' : 'Edit Teacher'}</DialogTitle>
+                    <DialogTitle sx={{ fontFamily: fontFamily }}>{event ? 'Add Teacher' : 'Edit Teacher'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
@@ -93,13 +93,22 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                             fontFamily: fontFamily
                                         }
                                     }}
-                                    sx={{
-                                        fontFamily: fontFamily
-                                    }}
                                     fullWidth
                                     {...getFieldProps('name')}
                                     error={Boolean(touched.name && errors.name)}
-                                    helperText={touched.name && errors.name}
+                                    helperText={
+                                        touched.name && errors.name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -117,7 +126,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     fullWidth
                                     {...getFieldProps('gender')}
                                     error={Boolean(touched.gender && errors.gender)}
-                                    helperText={touched.gender && errors.gender}
+                                    helperText={
+                                        touched.gender && errors.gender ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.gender}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
                                     <MenuItem sx={{ fontFamily: fontFamily }} value="MALE">
                                         MALE
@@ -148,7 +169,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                         shrink: true
                                     }}
                                     error={Boolean(touched.dob && errors.dob)}
-                                    helperText={touched.dob && errors.dob}
+                                    helperText={
+                                        touched.dob && errors.dob ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.dob}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -162,13 +195,22 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                             fontFamily: fontFamily
                                         }
                                     }}
-                                    sx={{
-                                        fontFamily: fontFamily
-                                    }}
                                     fullWidth
                                     {...getFieldProps('email')}
                                     error={Boolean(touched.email && errors.email)}
-                                    helperText={touched.email && errors.email}
+                                    helperText={
+                                        touched.email && errors.email ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.email}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -189,7 +231,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                         shrink: true
                                     }}
                                     error={Boolean(touched.date_of_joining && errors.date_of_joining)}
-                                    helperText={touched.date_of_joining && errors.date_of_joining}
+                                    helperText={
+                                        touched.date_of_joining && errors.date_of_joining ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.date_of_joining}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -216,7 +270,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                         }
                                     }}
                                     error={Boolean(touched.subject && errors.subject)}
-                                    helperText={touched.subject && errors.subject}
+                                    helperText={
+                                        touched.subject && errors.subject ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.subject}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
                                     <MenuItem sx={{ fontFamily: fontFamily }} value="SCIENCE">
                                         SCIENCE
@@ -243,7 +309,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     fullWidth
                                     {...getFieldProps('father_name')}
                                     error={Boolean(touched.father_name && errors.father_name)}
-                                    helperText={touched.father_name && errors.father_name}
+                                    helperText={
+                                        touched.father_name && errors.father_name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.father_name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -257,13 +335,22 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                             fontFamily: fontFamily
                                         }
                                     }}
-                                    sx={{
-                                        fontFamily: fontFamily
-                                    }}
                                     fullWidth
                                     {...getFieldProps('contact_number')}
                                     error={Boolean(touched.contact_number && errors.contact_number)}
-                                    helperText={touched.contact_number && errors.contact_number}
+                                    helperText={
+                                        touched.contact_number && errors.contact_number ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.contact_number}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -280,7 +367,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     fullWidth
                                     {...getFieldProps('mother_name')}
                                     error={Boolean(touched.mother_name && errors.mother_name)}
-                                    helperText={touched.mother_name && errors.mother_name}
+                                    helperText={
+                                        touched.mother_name && errors.mother_name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.mother_name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -297,7 +396,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     fullWidth
                                     {...getFieldProps('address')}
                                     error={Boolean(touched.address && errors.address)}
-                                    helperText={touched.address && errors.address}
+                                    helperText={
+                                        touched.address && errors.address ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.address}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -310,7 +421,19 @@ const TeacherForm = ({ event, range, handleCreate, handleUpdate, onCancel, teach
                                     fullWidth
                                     {...getFieldProps('today_presence')}
                                     error={Boolean(touched.today_presence && errors.today_presence)}
-                                    helperText={touched.today_presence && errors.today_presence}
+                                    helperText={
+                                        touched.today_presence && errors.today_presence ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.today_presence}
+                                            </span>
+                                        ) : null
+                                    }
                                     sx={{
                                         '& .MuiSelect-select': {
                                             fontFamily: fontFamily

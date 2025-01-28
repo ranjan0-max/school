@@ -34,7 +34,7 @@ import MainCard from 'componets/MainCard';
 
 // theme
 
-const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
+const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }) => {
     const [rows, setRows] = useState([]);
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState(headers?.[0]?.id);
@@ -84,7 +84,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                                     active={orderBy === headers.id}
                                     direction={orderBy === headers.id ? order : 'asc'}
                                     onClick={createSortHandler(headers.id)}
-                                    style={{ fontWeight: 'bolder', fontFamily: 'Copperplate, Fantasy' }}
+                                    style={{ fontWeight: 'bolder', fontFamily: fontFamily }}
                                 >
                                     {headers.label}
                                     {orderBy === headers.id ? (
@@ -99,7 +99,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                         <TableCell
                             sortDirection={false}
                             align="center"
-                            sx={{ pr: 3, fontWeight: 'bolder', background: '#d7ddde', fontFamily: 'Copperplate, Fantasy' }}
+                            sx={{ pr: 3, fontWeight: 'bolder', background: '#d7ddde', fontFamily: fontFamily }}
                         >
                             ACTION
                         </TableCell>
@@ -276,8 +276,9 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
             }
         >
             <CardContent style={{ paddingLeft: '0px' }}>
-                <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item xs={12} sm={6}>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    {/* Search Field */}
+                    <Grid item xs={12} sm={6} md={3}>
                         <TextField
                             InputProps={{
                                 startAdornment: (
@@ -287,32 +288,34 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                                 ),
                                 sx: {
                                     '&::placeholder': {
-                                        fontFamily: 'Copperplate, Fantasy',
+                                        fontFamily: fontFamily,
                                         fontSize: '16px'
                                     }
                                 }
                             }}
                             inputProps={{
                                 style: {
-                                    fontFamily: 'Copperplate, Fantasy'
+                                    fontFamily: fontFamily
                                 }
                             }}
                             onChange={handleSearch}
                             placeholder="Search"
                             value={search}
                             size="small"
+                            fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} container justifyContent="flex-end">
+                    {/* Add Button */}
+                    <Grid item xs="auto">
                         {addButton && (
-                            <Button color="primary" variant="contained" onClick={addButton} style={{ fontFamily: 'Copperplate, Fantasy' }}>
+                            <Button color="primary" variant="contained" onClick={addButton} style={{ fontFamily: fontFamily }}>
                                 Add
                             </Button>
                         )}
                     </Grid>
                 </Grid>
             </CardContent>
-            <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
+            <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
                 <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                     <EnhancedTableHead
                         numSelected={selected.length}
@@ -392,14 +395,14 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions }) => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 sx={{
                     '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
-                        fontFamily: 'Copperplate, Fantasy',
+                        fontFamily: fontFamily,
                         fontSize: '14px'
                     },
                     '& .MuiTablePagination-select': {
-                        fontFamily: 'Copperplate, Fantasy'
+                        fontFamily: fontFamily
                     },
                     '& .MuiTablePagination-actions button': {
-                        fontFamily: 'Copperplate, Fantasy'
+                        fontFamily: fontFamily
                     }
                 }}
             />

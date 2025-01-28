@@ -12,7 +12,7 @@ import { IconSettings } from '@tabler/icons-react';
 const ITEM_HEIGHT = 30;
 const drawerWidth = 200;
 
-const Header = ({ isDrawerOpen }) => {
+const Header = () => {
     const { logOut } = useAuth();
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);

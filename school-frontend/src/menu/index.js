@@ -8,6 +8,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 // custom hook
 import useAuth from 'customHook/useAuth';
+import useWindowSize from 'customHook/useWindowSize';
 
 // components
 import Footer from './Footer';
@@ -15,24 +16,27 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 
 const drawerWidth = 200;
-const expandedDrawerWidth = 200;
 const collapsedDrawerWidth = 72;
 
 export default function PermanentDrawerLeft() {
     const { menu } = useAuth();
     const navigate = useNavigate();
+    const { width, height } = useWindowSize();
 
-    const [label, setLabel] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
     const [menuGroups, setMenuGroups] = useState([]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
     const handleMenuItemClick = (path, selectedLabel) => {
         navigate(path);
-        setLabel(selectedLabel);
     };
 
     const handleDrawer = () => {
-        setIsDrawerOpen(!isDrawerOpen);
+        if (isMobile) {
+            setIsDrawerOpen(false);
+        } else {
+            setIsDrawerOpen(!isDrawerOpen);
+        }
     };
 
     const groupMenuItems = (menuItems) => {
@@ -40,11 +44,10 @@ export default function PermanentDrawerLeft() {
         let classMenus = [];
 
         menuItems.forEach((menuGroup) => {
-            if (menuGroup && menuGroup.id === 'master') {
+            if (menuGroup?.id === 'master') {
                 masterMenus = menuGroup.children;
             }
-
-            if (menuGroup && menuGroup.id === 'operations') {
+            if (menuGroup?.id === 'operations') {
                 classMenus = menuGroup.children;
             }
         });
@@ -68,6 +71,15 @@ export default function PermanentDrawerLeft() {
         setMenuGroups(groupedData);
     }, [menu]);
 
+    React.useEffect(() => {
+        if (width < 800) {
+            setIsMobile(true);
+            setIsDrawerOpen(false);
+        } else {
+            setIsMobile(false);
+        }
+    }, [width, height]);
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <CssBaseline />
@@ -75,26 +87,22 @@ export default function PermanentDrawerLeft() {
             <Box
                 component="header"
                 sx={{
-                    p: 2,
+                    mb: 3,
                     width: '100%',
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                    zIndex: (theme) => theme.zIndex.appBar,
                     position: 'sticky',
-                    top: 0,
-                    backgroundColor: 'white',
-                    height: 'calc(100vh - 53vh - 100vh)'
+                    top: 0
                 }}
             >
-                <Header isDrawerOpen={isDrawerOpen} handleDrawer={handleDrawer} />
+                <Header />
             </Box>
             <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
                 {/* Sidebar */}
                 <Box
                     sx={{
-                        width: isDrawerOpen ? drawerWidth : collapsedDrawerWidth,
-                        overflowY: 'auto',
+                        overflowX: 'auto',
                         position: 'sticky',
-                        top: 64, // Adjust for the header height
-                        transition: 'width 0.3s ease'
+                        zIndex: (theme) => theme.zIndex.drawer + 2
                     }}
                 >
                     <Sidebar
@@ -109,14 +117,15 @@ export default function PermanentDrawerLeft() {
                 <Box
                     component="main"
                     sx={{
+                        ml: 3,
                         flexGrow: 1,
                         bgcolor: 'background.default',
                         pt: 6,
                         pl: 4,
                         pr: 2,
                         overflowY: 'auto',
-                        transition: 'width 0.3s ease',
-                        height: 'calc(100vh)' // Ensuring content fits without overlap
+                        height: '100%', // Ensure content fits without overlap
+                        mt: 2
                     }}
                 >
                     <Box sx={{ flex: 1 }}>
@@ -130,7 +139,7 @@ export default function PermanentDrawerLeft() {
                 sx={{
                     bgcolor: 'background.paper',
                     textAlign: 'center',
-                    // height: '48px',
+                    height: '48px',
                     position: 'sticky',
                     bottom: 0
                 }}

@@ -113,7 +113,14 @@ const Classes = () => {
         <>
             <SnackbarComponent />
             <div {...(isModalOpen ? { inert: 'true' } : {})}>
-                <DataTable headers={headers} tableTitle="Class List" addButton={addButton} actions={actions} data={data} />
+                <DataTable
+                    headers={headers}
+                    tableTitle="Class List"
+                    addButton={addButton}
+                    actions={actions}
+                    data={data}
+                    fontFamily="Copperplate, Fantasy"
+                />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
                 <ClassesForm
@@ -122,6 +129,7 @@ const Classes = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     classDetail={classDetail}
+                    fontFamily="Copperplate, Fantasy"
                 />
             </Dialog>
         </>

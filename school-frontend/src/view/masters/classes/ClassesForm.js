@@ -37,7 +37,7 @@ const getInitialValues = (event, range, classDetail) => {
     return newEvent;
 };
 
-const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, classDetail }) => {
+const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, classDetail, fontFamily }) => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
     const [teacherList, setTeacherList] = useState([]);
     const [subjectList, setSubjectList] = useState([]);
@@ -117,54 +117,130 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
             <SnackbarComponent />
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add Class' : 'Edit Class'}</DialogTitle>
+                    <DialogTitle sx={{ fontFamily: fontFamily }}>{event ? 'Add Class' : 'Edit Class'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Class Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Class Name
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('class_name')}
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     onChange={(e) => formik.setFieldValue('class_name', e.target.value.toUpperCase())}
                                     error={Boolean(touched.class_name && errors.class_name)}
-                                    helperText={touched.class_name && errors.class_name}
+                                    helperText={
+                                        touched.class_name && errors.class_name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.class_name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Total Strength</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Total Strength
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('total_strength')}
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     error={Boolean(touched.total_strength && errors.total_strength)}
-                                    helperText={touched.total_strength && errors.total_strength}
+                                    helperText={
+                                        touched.total_strength && errors.total_strength ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.total_strength}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Total Class Capacity</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Total Class Capacity
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('total_student_capacity')}
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     error={Boolean(touched.total_student_capacity && errors.total_student_capacity)}
-                                    helperText={touched.total_student_capacity && errors.total_student_capacity}
+                                    helperText={
+                                        touched.total_student_capacity && errors.total_student_capacity ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.total_student_capacity}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Class Teacher</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Class Teacher
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('class_teacher')}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     error={Boolean(touched.class_teacher && errors.class_teacher)}
-                                    helperText={touched.class_teacher && errors.class_teacher}
+                                    helperText={
+                                        touched.class_teacher && errors.class_teacher ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.class_teacher}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
                                     {teacherList.length ? (
                                         teacherList.map((option) => (
-                                            <MenuItem key={option._id} value={option._id}>
+                                            <MenuItem key={option._id} value={option._id} sx={{ fontFamily: fontFamily }}>
                                                 {option.name}
                                             </MenuItem>
                                         ))
@@ -174,14 +250,28 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Subjects</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Subjects
+                                </Typography>
                                 <TextField
                                     select
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('class_subjects')}
                                     error={Boolean(touched.class_subjects && errors.class_subjects)}
-                                    helperText={touched.class_subjects && errors.class_subjects}
+                                    helperText={
+                                        touched.class_subjects && errors.class_subjects ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.class_subjects}
+                                            </span>
+                                        ) : null
+                                    }
                                     SelectProps={{
                                         multiple: true,
                                         value: values.class_subjects || [],
@@ -197,10 +287,15 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                                 })
                                                 .join(', ')
                                     }}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                 >
                                     {subjectList.length ? (
                                         subjectList.map((subject) => (
-                                            <MenuItem key={subject._id} value={subject._id}>
+                                            <MenuItem key={subject._id} value={subject._id} sx={{ fontFamily: fontFamily }}>
                                                 {subject.name}
                                             </MenuItem>
                                         ))
@@ -210,17 +305,36 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                                 </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Room Number</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Room Number
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
                                     {...getFieldProps('class_room_no')}
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     error={Boolean(touched.class_room_no && errors.class_room_no)}
-                                    helperText={touched.class_room_no && errors.class_room_no}
+                                    helperText={
+                                        touched.class_room_no && errors.class_room_no ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.class_room_no}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             {/* <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Equipments</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>Equipments</Typography>
                                 <TextField
                                     select
                                     size="small"
@@ -240,10 +354,10 @@ const ClassesForm = ({ event, range, handleCreate, handleUpdate, onCancel, class
                         <Grid container justifyContent="center" alignItems="center">
                             <Grid item>
                                 <Stack direction="row" spacing={2} alignItems="center">
-                                    <Button type="button" variant="outlined" onClick={onCancel}>
+                                    <Button type="button" variant="outlined" onClick={onCancel} sx={{ fontFamily: fontFamily }}>
                                         Cancel
                                     </Button>
-                                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                                    <Button type="submit" variant="contained" disabled={isSubmitting} sx={{ fontFamily: fontFamily }}>
                                         {!event ? 'Update' : 'Save'}
                                     </Button>
                                 </Stack>

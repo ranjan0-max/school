@@ -28,7 +28,7 @@ const getInitialValues = (event, range, subjectDetail) => {
     return newEvent;
 };
 
-const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subjectDetail }) => {
+const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subjectDetail, fontFamily }) => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
     const [classList, setClassList] = useState([]);
 
@@ -83,14 +83,33 @@ const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subje
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12} sm={6} md={6}>
-                                <Typography marginBottom="5px">Name</Typography>
+                                <Typography marginBottom="5px" fontFamily={fontFamily}>
+                                    Name
+                                </Typography>
                                 <TextField
                                     size="small"
                                     fullWidth
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
+                                    }}
                                     {...getFieldProps('name')}
                                     onChange={(e) => formik.setFieldValue('name', e.target.value.toUpperCase())}
                                     error={Boolean(touched.name && errors.name)}
-                                    helperText={touched.name && errors.name}
+                                    helperText={
+                                        touched.name && errors.name ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.name}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                         </Grid>
@@ -100,10 +119,10 @@ const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subje
                         <Grid container justifyContent="center" alignItems="center">
                             <Grid item>
                                 <Stack direction="row" spacing={2} alignItems="center">
-                                    <Button type="button" variant="outlined" onClick={onCancel}>
+                                    <Button type="button" variant="outlined" onClick={onCancel} sx={{ fontFamily: fontFamily }}>
                                         Cancel
                                     </Button>
-                                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                                    <Button type="submit" variant="contained" disabled={isSubmitting} sx={{ fontFamily: fontFamily }}>
                                         {!event ? 'Update' : 'Save'}
                                     </Button>
                                 </Stack>

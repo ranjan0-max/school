@@ -58,21 +58,21 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                 width: isDrawerOpen ? drawerWidth : 72,
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    height: 'calc(100vh - 54px - 80px)',
+                    height: '78%',
                     width: isDrawerOpen ? drawerWidth : 72,
                     boxSizing: 'border-box',
                     overflowX: 'hidden',
                     transition: 'width 0.3s ease',
                     background: '#189ab4',
                     borderRadius: '10px',
-                    marginTop: '5%',
-                    marginLeft: '1%'
+                    marginLeft: '1%',
+                    mt: 12
                 }
             }}
             variant="permanent"
             anchor="left"
         >
-            <Toolbar sx={{ pl: 0 }}>
+            <Toolbar>
                 <IconButton
                     sx={{
                         color: 'white',
@@ -166,7 +166,12 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                             <List component="div" disablePadding sx={{ pl: 2 }}>
                                 {menu.items.map((subMenu, index) => (
                                     <ListItem key={index} disablePadding>
-                                        <ListItemButton onClick={() => handleItemSelection(subMenu)}>
+                                        <ListItemButton
+                                            onClick={() => {
+                                                handleItemSelection(subMenu);
+                                                setSelectedGroup(menu.group);
+                                            }}
+                                        >
                                             <ListItemText
                                                 primary={
                                                     <Typography

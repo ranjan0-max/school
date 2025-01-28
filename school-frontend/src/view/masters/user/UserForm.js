@@ -117,15 +117,29 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                     User Id
                                 </Typography>
                                 <TextField
-                                    sx={{
-                                        fontFamily: fontFamily
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
                                     }}
                                     size="small"
                                     autoComplete="off"
                                     fullWidth
                                     {...getFieldProps('user_id')}
                                     error={Boolean(touched.user_id && errors.user_id)}
-                                    helperText={touched.user_id && errors.user_id}
+                                    helperText={
+                                        touched.user_id && errors.user_id ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.user_id}
+                                            </span>
+                                        ) : null
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={6}>
@@ -133,15 +147,29 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                     Password
                                 </Typography>
                                 <TextField
-                                    sx={{
-                                        fontFamily: fontFamily
+                                    inputProps={{
+                                        style: {
+                                            fontFamily: fontFamily
+                                        }
                                     }}
                                     size="small"
                                     autoComplete="off"
                                     fullWidth
                                     {...getFieldProps('password')}
                                     error={Boolean(touched.password && errors.password)}
-                                    helperText={touched.password && errors.password}
+                                    helperText={
+                                        touched.password && errors.password ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.password}
+                                            </span>
+                                        ) : null
+                                    }
                                     type={showPassword ? 'text' : 'password'} // Toggle between text and password type
                                     InputProps={{
                                         endAdornment: (
@@ -167,7 +195,19 @@ const UserForm = ({ event, range, handleCreate, handleUpdate, onCancel, userDeta
                                     fullWidth
                                     {...getFieldProps('role')}
                                     error={Boolean(touched.role && errors.role)}
-                                    helperText={touched.role && errors.role}
+                                    helperText={
+                                        touched.role && errors.role ? (
+                                            <span
+                                                style={{
+                                                    fontFamily: fontFamily,
+                                                    fontSize: '12px',
+                                                    color: 'red'
+                                                }}
+                                            >
+                                                {errors.role}
+                                            </span>
+                                        ) : null
+                                    }
                                 >
                                     {roleList.map((option) => (
                                         <MenuItem sx={{ fontFamily: fontFamily }} key={option._id} value={option._id}>
