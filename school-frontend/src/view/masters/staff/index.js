@@ -14,6 +14,9 @@ import { Dialog } from '@mui/material';
 import useSnackbarAlert from 'customHook/alert';
 import React, { useState } from 'react';
 
+// constant
+import { fontFamily } from 'constant/constant';
+
 const Student = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
 
@@ -23,9 +26,9 @@ const Student = () => {
     const [data, setData] = useState([]);
 
     // fetch student list
-    const fetchTeachers = async () => {
+    const fetchStaff = async (customeQuery, signal) => {
         try {
-            const response = await getStaffs();
+            const response = await getStaffs(customeQuery, signal);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
@@ -44,7 +47,7 @@ const Student = () => {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchTeachers();
+                fetchStaff();
                 handleModalClose();
             }
         } catch (error) {
@@ -60,7 +63,7 @@ const Student = () => {
                 openTostar(response, 'error');
             } else {
                 openTostar(response.data.message, 'success');
-                fetchTeachers();
+                fetchStaff();
                 handleModalClose();
             }
         } catch (error) {
@@ -107,7 +110,12 @@ const Student = () => {
     };
 
     React.useEffect(() => {
-        fetchTeachers();
+        const controller = new AbortController();
+        fetchStaff({}, controller.signal);
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     return (
@@ -120,7 +128,7 @@ const Student = () => {
                     addButton={addButton}
                     actions={actions}
                     data={data}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
@@ -130,7 +138,7 @@ const Student = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     staffDetail={staffDetail}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </Dialog>
         </>

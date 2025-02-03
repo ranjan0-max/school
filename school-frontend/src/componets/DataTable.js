@@ -66,7 +66,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
                     </TableCell> */}
                     {numSelected > 0 && (
                         <TableCell padding="none" colSpan={6}>
-                            <EnhancedTableToolbar numSelected={selected.length} />
+                            <EnhancedTableToolbar numSelected={selected?.length} />
                         </TableCell>
                     )}
                     {numSelected <= 0 &&
@@ -95,7 +95,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
                                 </TableSortLabel>
                             </TableCell>
                         ))}
-                    {numSelected <= 0 && (
+                    {numSelected <= 0 && actions && (
                         <TableCell
                             sortDirection={false}
                             align="center"
@@ -242,7 +242,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            if (selected.length > 0) {
+            if (selected?.length > 0) {
                 setSelected([]);
             } else {
                 const newSelectedId = rows.map((n) => n._id);
@@ -261,7 +261,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
     }, [headers]);
 
     React.useEffect(() => {
-        if (data.length) {
+        if (data?.length) {
             setRows(data);
         }
     }, [data]);
@@ -270,7 +270,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
         <MainCard
             border={true}
             title={
-                <Typography variant="h5" color="white" fontWeight="bold" fontFamily="Copperplate, Fantasy">
+                <Typography variant="h5" color="white" fontWeight="bold" fontFamily={fontFamily}>
                     {tableTitle}
                 </Typography>
             }
@@ -318,19 +318,19 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
             <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
                 <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                     <EnhancedTableHead
-                        numSelected={selected.length}
+                        numSelected={selected?.length}
                         order={order}
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length}
+                        rowCount={rows?.length}
                         selected={selected}
                     />
                     <TableBody>
-                        {rows.length === 0 ? (
+                        {rows?.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={headers.length + 1} align="center">
-                                    <Typography variant="subtitle1" fontFamily="Copperplate, Fantasy">
+                                <TableCell colSpan={headers?.length + 1} align="center">
+                                    <Typography variant="subtitle1" fontFamily={fontFamily}>
                                         NO DATA AVAILABLE IN TABLE
                                     </Typography>
                                 </TableCell>
@@ -362,7 +362,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
                                                     <Typography
                                                         variant="subtitle1"
                                                         color={header.id === 'jobNumber' ? 'secondary' : 'inherit'}
-                                                        fontFamily="Copperplate, Fantasy"
+                                                        fontFamily={fontFamily}
                                                     >
                                                         {row[header.id]}
                                                     </Typography>
@@ -388,7 +388,7 @@ const DataTable = ({ data, headers, tableTitle, addButton, actions, fontFamily }
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={rows?.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

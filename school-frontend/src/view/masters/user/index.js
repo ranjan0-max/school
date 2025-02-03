@@ -1,3 +1,8 @@
+//React
+import { Dialog } from '@mui/material';
+import useSnackbarAlert from 'customHook/alert';
+import React, { useState } from 'react';
+
 // csutome datatable
 import DataTable from 'componets/DataTable';
 
@@ -7,12 +12,12 @@ import UserForm from './UserForm';
 // api
 import { createUser, getUser, updateUser } from 'api/user/useApi';
 
-//React
+//icons
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Dialog } from '@mui/material';
-import useSnackbarAlert from 'customHook/alert';
-import React, { useState } from 'react';
+
+// constant
+import { fontFamily } from 'constant/constant';
 
 const Student = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
@@ -23,16 +28,18 @@ const Student = () => {
     const [data, setData] = useState([]);
 
     // fetch student list
-    const fetchUsers = async () => {
+    const fetchUsers = async (customQuery, signal) => {
         try {
-            const response = await getUser();
+            const response = await getUser(customQuery, signal);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 setData(response);
             }
         } catch (error) {
-            console.log('Error:', error);
+            if (error.name !== 'AbortError') {
+                console.log('Error:', error);
+            }
         }
     };
 
@@ -104,12 +111,11 @@ const Student = () => {
     };
 
     React.useEffect(() => {
-        let isMounted = true;
-        if (isMounted) {
-            fetchUsers();
-        }
+        const controller = new AbortController();
+        fetchUsers({}, controller.signal);
+
         return () => {
-            isMounted = false;
+            controller.abort();
         };
     }, []);
 
@@ -123,7 +129,7 @@ const Student = () => {
                     addButton={addButton}
                     actions={actions}
                     data={data}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
@@ -133,7 +139,7 @@ const Student = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     userDetail={userDetail}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </Dialog>
         </>

@@ -15,6 +15,9 @@ import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
+// consttant
+import { fontFamily } from 'constant/constant';
+
 const drawerWidth = 200;
 const collapsedDrawerWidth = 72;
 
@@ -106,6 +109,7 @@ export default function PermanentDrawerLeft() {
                     }}
                 >
                     <Sidebar
+                        fontFamily={fontFamily}
                         drawerWidth={drawerWidth}
                         accessableMenuList={menuGroups}
                         handleMenuItemClick={handleMenuItemClick}

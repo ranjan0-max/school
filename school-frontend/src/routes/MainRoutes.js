@@ -13,6 +13,9 @@ const Classes = Loadable(lazy(() => import('../view/masters/classes')));
 const Teachers = Loadable(lazy(() => import('../view/masters/teacher')));
 const Staff = Loadable(lazy(() => import('../view/masters/staff')));
 const Subjects = Loadable(lazy(() => import('../view/masters/subject')));
+// operations components
+const Attendance = Loadable(lazy(() => import('../view/operations/attendance')));
+const TimeTable = Loadable(lazy(() => import('../view/operations/timeTable')));
 
 const MainRoutes = {
     path: '/',
@@ -49,6 +52,14 @@ const MainRoutes = {
         {
             path: '/masters/subjects',
             element: <RouteGard Component={Subjects} url={'/masters/subjects'} />
+        },
+        {
+            path: '/operations/attendance',
+            element: <RouteGard Component={Attendance} url={'/operations/attendance'} />
+        },
+        {
+            path: '/operations/timeTable',
+            element: <RouteGard Component={TimeTable} url={'/operations/timeTable'} />
         }
     ]
 };
