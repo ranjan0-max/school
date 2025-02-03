@@ -3,9 +3,7 @@ import axios from 'intercepter/axios';
 export async function getSubjects(query = {}) {
     try {
         const response = await axios.get('/subject', {
-            params: {
-                ...query
-            }
+            params: { ...query }
         });
         return response.data.data;
     } catch (error) {

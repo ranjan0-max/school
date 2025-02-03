@@ -7,6 +7,8 @@ const classRoute = require('./classes.routes');
 const teacherRoute = require('./teacher.routes');
 const staffRoute = require('./staff.routes');
 const subjectRoute = require('./subject.routes');
+const attendanceRoute = require('./attendance.routes');
+const timeTableRoute = require('./timeTable.routes');
 const app = require('../app');
 
 //! always remove  before pushing to server
@@ -21,6 +23,8 @@ function appRouter() {
     app.use('/v1/teacher', teacherRoute);
     app.use('/v1/staff', staffRoute);
     app.use('/v1/subject', subjectRoute);
+    app.use('/v1/attendance', attendanceRoute);
+    app.use('/v1/timetable', timeTableRoute);
     //\\ ==============================|| END: UI MASTERS ROUTES ||============================== //\\
 }
 

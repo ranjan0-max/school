@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawerOpen, handleDrawer }) => {
+const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawerOpen, handleDrawer, fontFamily }) => {
     const [openGroups, setOpenGroups] = useState({});
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -135,7 +135,7 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                                                     sx={{
                                                         fontWeight: 600,
                                                         fontSize: '14px',
-                                                        fontFamily: 'Copperplate, Fantasy',
+                                                        fontFamily: fontFamily,
                                                         textAlign: 'center',
                                                         color: selectedGroup === menu.group ? 'primary.main' : 'white'
                                                     }}
@@ -180,7 +180,7 @@ const Sidebar = ({ drawerWidth, accessableMenuList, handleMenuItemClick, isDrawe
                                                             color: selectedItem === subMenu.title ? 'white' : 'white',
                                                             fontWeight: selectedItem === subMenu.title ? 'bold' : '',
                                                             textAlign: 'center',
-                                                            fontFamily: 'Copperplate, Fantasy'
+                                                            fontFamily: fontFamily
                                                         }}
                                                     >
                                                         {subMenu.title}

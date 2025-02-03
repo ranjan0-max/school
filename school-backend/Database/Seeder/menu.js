@@ -85,6 +85,15 @@ const data = [
                 accesss: false,
                 icon: 'time_table',
                 breadcrumbs: false
+            },
+            {
+                id: 'attendance',
+                title: 'Attendance',
+                type: 'item',
+                url: '/operations/attendance',
+                accesss: false,
+                icon: 'time_attendance',
+                breadcrumbs: false
             }
         ]
     }

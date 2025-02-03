@@ -14,6 +14,9 @@ import { Dialog } from '@mui/material';
 import useSnackbarAlert from 'customHook/alert';
 import React, { useState } from 'react';
 
+// constant
+import { fontFamily } from 'constant/constant';
+
 const Subject = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
 
@@ -32,7 +35,9 @@ const Subject = () => {
                 setData(response);
             }
         } catch (error) {
-            console.log('Error:', error);
+            if (error.name !== 'AbortError') {
+                console.log('Error:', error);
+            }
         }
     };
 
@@ -101,13 +106,7 @@ const Subject = () => {
     };
 
     React.useEffect(() => {
-        let isMounted = true;
-        if (isMounted) {
-            fetchSubjects();
-        }
-        return () => {
-            isMounted = false;
-        };
+        fetchSubjects();
     }, []);
 
     return (
@@ -120,7 +119,7 @@ const Subject = () => {
                     addButton={addButton}
                     actions={actions}
                     data={data}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
@@ -130,7 +129,7 @@ const Subject = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     subjectDetail={subjectDetail}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </Dialog>
         </>

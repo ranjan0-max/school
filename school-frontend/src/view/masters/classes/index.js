@@ -13,6 +13,9 @@ import { Dialog } from '@mui/material';
 import useSnackbarAlert from 'customHook/alert';
 import React, { useState } from 'react';
 
+// constant
+import { fontFamily } from 'constant/constant';
+
 const Classes = () => {
     const { openTostar, SnackbarComponent } = useSnackbarAlert();
 
@@ -22,9 +25,9 @@ const Classes = () => {
     const [data, setData] = useState([]);
 
     // fetch Classes list
-    const fetchClasses = async () => {
+    const fetchClasses = async (customeQuery, signal) => {
         try {
-            const response = await getClasses();
+            const response = await getClasses(customeQuery, signal);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
@@ -106,7 +109,12 @@ const Classes = () => {
     };
 
     React.useEffect(() => {
-        fetchClasses();
+        const controller = new AbortController();
+        fetchClasses({}, controller.signal);
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     return (
@@ -119,7 +127,7 @@ const Classes = () => {
                     addButton={addButton}
                     actions={actions}
                     data={data}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </div>
             <Dialog maxWidth="sm" fullWidth onClose={handleModalClose} open={isModalOpen} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
@@ -129,7 +137,7 @@ const Classes = () => {
                     event={modelEvent}
                     handleUpdate={handleUpdate}
                     classDetail={classDetail}
-                    fontFamily="Copperplate, Fantasy"
+                    fontFamily={fontFamily}
                 />
             </Dialog>
         </>

@@ -78,7 +78,7 @@ const SubjectForm = ({ event, range, handleCreate, handleUpdate, onCancel, subje
             <SnackbarComponent />
             <LocalizationProvider>
                 <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <DialogTitle>{event ? 'Add Subject' : 'Edit Subject'}</DialogTitle>
+                    <DialogTitle sx={{ fontFamily: fontFamily }}>{event ? 'Add Subject' : 'Edit Subject'}</DialogTitle>
                     <Divider />
                     <DialogContent sx={{ p: 3 }}>
                         <Grid container spacing={gridSpacing}>
