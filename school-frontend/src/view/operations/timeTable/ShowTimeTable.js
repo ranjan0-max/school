@@ -6,7 +6,7 @@ import { getTimeTableInDetail, updateTimeTable } from 'api/timeTable/timeTableAp
 import useSnackbarAlert from 'customHook/alert';
 import React, { useState } from 'react';
 
-// modal
+// model
 import TimeTableForm from './TimeTableForm';
 
 // constant
