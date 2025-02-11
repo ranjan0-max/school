@@ -26,16 +26,18 @@ const Student = () => {
     const [data, setData] = useState([]);
 
     // fetch student list
-    const fetchStudents = async () => {
+    const fetchStudents = async (customeQuery, signal) => {
         try {
-            const response = await getStudents();
+            const response = await getStudents(customeQuery, signal);
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 setData(response);
             }
         } catch (error) {
-            console.log(error);
+            if (error.name !== 'AbortError') {
+                console.log('Error:', error);
+            }
         }
     };
 
@@ -110,7 +112,12 @@ const Student = () => {
     };
 
     React.useEffect(() => {
-        fetchStudents();
+        const controller = new AbortController();
+        fetchStudents({}, controller.signal);
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     return (
