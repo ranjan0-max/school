@@ -1,12 +1,14 @@
 import { lazy } from 'react';
 
 // project imports
+import CheckUserDashBoard from 'guard/checkUserDashBoard';
 import RouteGard from 'guard/routeGard';
 import Loadable from '../componets/Loadable';
 import AuthGuard from '../guard/authGuard';
 import MenuLayout from '../menu';
 
-const DashBoard = Loadable(lazy(() => import('../view/dashboard')));
+const DashBoard = Loadable(lazy(() => import('../view/defaultDashboard')));
+// masters
 const User = Loadable(lazy(() => import('../view/masters/user')));
 const Student = Loadable(lazy(() => import('../view/masters/student')));
 const Classes = Loadable(lazy(() => import('../view/masters/classes')));
@@ -26,8 +28,8 @@ const MainRoutes = {
     ),
     children: [
         {
-            path: '/principal-dashboard',
-            element: <DashBoard />
+            path: '/dashboard',
+            element: <CheckUserDashBoard />
         },
         {
             path: '/masters/users',

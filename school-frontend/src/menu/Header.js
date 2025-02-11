@@ -1,5 +1,5 @@
 import SchoolIcon from '@mui/icons-material/School';
-import { AppBar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Container, Grid, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import { useState } from 'react';
 
 // custom hook
@@ -46,8 +46,12 @@ const Header = () => {
                     }}
                 >
                     <Toolbar>
-                        <SchoolIcon color="white" />
-                        <Typography sx={{ fontWeight: 'bolder', marginLeft: 1, color: 'white' }}>School Manager</Typography>
+                        <Grid container>
+                            <SchoolIcon color="white" />
+                            <Typography sx={{ fontWeight: 'bolder', marginLeft: 1, color: 'white', cursor: 'pointer' }}>
+                                School Manager
+                            </Typography>
+                        </Grid>
                         <Box sx={{ flexGrow: 2 }} /> {/* Spacer */}
                         <IconButton
                             aria-label="more"

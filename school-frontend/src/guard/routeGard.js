@@ -2,8 +2,6 @@ import Loadable from 'componets/Loadable';
 import { lazy, useEffect, useState } from 'react';
 import useAuth from '../customHook/useAuth';
 
-// api
-
 const MaintenanceError = Loadable(lazy(() => import('../componets/Error')));
 
 function RouteGard(props) {

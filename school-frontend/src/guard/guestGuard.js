@@ -30,7 +30,7 @@ const GuestGuard = ({ children }) => {
         if (userRole) {
             if (isAuthenticated) {
                 if (userRole === 'PRINCIPAL') {
-                    navigate('/principal-dashboard');
+                    navigate('/dashboard');
                 }
             } else {
                 navigate('/');
