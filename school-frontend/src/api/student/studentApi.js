@@ -1,19 +1,14 @@
 import axios from 'intercepter/axios';
 
-export async function getStudents(query = {}, signal) {
+export async function getStudents(query = {}) {
     try {
         const response = await axios.get('/student', {
             params: {
                 ...query
-            },
-            signal
+            }
         });
         return response.data.data;
     } catch (error) {
-        if (axios.isCancel(error)) {
-            console.log('Request canceled:', error.message);
-            return null;
-        }
         return error.message;
     }
 }

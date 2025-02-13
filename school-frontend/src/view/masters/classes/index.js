@@ -25,9 +25,9 @@ const Classes = () => {
     const [data, setData] = useState([]);
 
     // fetch Classes list
-    const fetchClasses = async (customeQuery, signal) => {
+    const fetchClasses = async () => {
         try {
-            const response = await getClasses(customeQuery, signal);
+            const response = await getClasses();
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
@@ -109,12 +109,7 @@ const Classes = () => {
     };
 
     React.useEffect(() => {
-        const controller = new AbortController();
-        fetchClasses({}, controller.signal);
-
-        return () => {
-            controller.abort();
-        };
+        fetchClasses();
     }, []);
 
     return (

@@ -28,18 +28,16 @@ const Student = () => {
     const [data, setData] = useState([]);
 
     // fetch student list
-    const fetchUsers = async (customQuery, signal) => {
+    const fetchUsers = async () => {
         try {
-            const response = await getUser(customQuery, signal);
+            const response = await getUser();
             if (typeof response === 'string') {
                 openTostar(response, 'error');
             } else {
                 setData(response);
             }
         } catch (error) {
-            if (error.name !== 'AbortError') {
-                console.log('Error:', error);
-            }
+            console.log('Error:', error);
         }
     };
 

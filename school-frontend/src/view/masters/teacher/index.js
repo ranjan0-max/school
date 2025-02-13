@@ -35,9 +35,7 @@ const Student = () => {
                 setData(response);
             }
         } catch (error) {
-            if (error.name !== 'AbortError') {
-                console.log('Error:', error);
-            }
+            console.log('Error:', error);
         }
     };
 
